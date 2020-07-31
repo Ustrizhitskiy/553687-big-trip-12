@@ -1,7 +1,7 @@
 # Личный проект «Большое путешествие» [![Build status][travis-image]][travis-url]
 
 * Студент: [Сергей Устрижицкий](https://up.htmlacademy.ru/ecmascript/12/user/553687).
-* Наставник: Андрей Рыжаков.
+* Наставник: [Андрей Рыжаков](https://htmlacademy.ru/profile/id201015).
 
 ---
 
