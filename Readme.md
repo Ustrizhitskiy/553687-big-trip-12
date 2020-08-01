@@ -3,6 +3,7 @@
 * Студент: [Сергей Устрижицкий](https://up.htmlacademy.ru/ecmascript/12/user/553687).
 * Наставник: [Андрей Рыжаков](https://htmlacademy.ru/profile/id201015).
 
+
 ---
 
 _Не удаляйте и не изменяйте папки и файлы:_
