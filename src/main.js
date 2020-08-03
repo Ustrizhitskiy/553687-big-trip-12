@@ -353,6 +353,5 @@ render(sortAndContentElement, createEventListTemplate(), `beforeend`);
 const dayEventsList = sortAndContentElement.querySelector(`.trip-days .trip-events__list`);
 
 for (let i = 0; i < EVENT_COUNT; i++) {
-  debugger;
   render(dayEventsList, createEventItemTemplate(), `beforeend`);
 }
