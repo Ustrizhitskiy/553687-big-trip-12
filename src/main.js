@@ -18,7 +18,7 @@ const OFFERS_COUNT = 5;
 const EVENT_COUNT = 3;
 
 const render = (container, template, position) => {
-  container.insertAdjacentHTML(position, template)
+  container.insertAdjacentHTML(position, template);
 };
 
 const tripMainHeaderElement = document.querySelector(`.trip-main`);
