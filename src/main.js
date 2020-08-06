@@ -3,11 +3,16 @@ import {createMenuTabsTemplate} from "./view/menu-tabs";
 import {createFilterListTemplate} from "./view/filter/filter-list";
 import {createFilterItemTemplate} from "./view/filter/filter-item";
 import {createSortTemplate} from "./view/sort";
-import {createEventCardTemplate} from "./view/event/event-card";
+import {createEventCardTemplate} from "./view/event/card/event-card";
+import {createEventTypeGroupTemplate} from "./view/event/card/subcomponents/event-type-group";
+import {createEventTypeItemTemplate} from "./view/event/card/subcomponents/event-type-item";
 import {createEventListTemplate} from "./view/event/event-list";
 import {createEventItemTemplate} from "./view/event/event-item";
 
 const FILTER_COUNT = 3;
+const EVENT_TYPE_GROUP_COUNT = 2;
+const TRANSFER_EVENT_COUNT = 7;
+const ACTIVITY_EVENT_COUNT = 3;
 const EVENT_COUNT = 3;
 
 const render = (container, template, position) => {
@@ -25,7 +30,7 @@ const filterTitleElement = tabsAndFiltersElement.querySelectorAll(`h2`)[1];
 render(filterTitleElement, createFilterListTemplate(), `afterend`);
 
 const filterFormElement = tabsAndFiltersElement.querySelector(`.trip-filters`);
-for (let i = 0; i < FILTER_COUNT; i ++) {
+for (let i = 0; i < FILTER_COUNT; i++) {
   render(filterFormElement, createFilterItemTemplate(), `afterbegin`);
 }
 
@@ -35,6 +40,22 @@ const tripEventsTitleElement = sortAndContentElement.querySelector(`h2`);
 
 render(tripEventsTitleElement, createSortTemplate(), `afterend`);
 render(sortAndContentElement, createEventCardTemplate(), `beforeend`);
+
+const eventTypeListElement = sortAndContentElement.querySelector(`.event__type-list`);
+for (let i = 0; i < EVENT_TYPE_GROUP_COUNT; i++) {
+  render(eventTypeListElement, createEventTypeGroupTemplate(), `afterbegin`);
+}
+
+const eventTypeTransferElement = eventTypeListElement.querySelectorAll(`.event__type-group`)[0];
+for (let i = 0; i < TRANSFER_EVENT_COUNT; i++) {
+  render(eventTypeTransferElement, createEventTypeItemTemplate(), `beforeend`);
+}
+
+const eventTypeActivityElement = eventTypeListElement.querySelectorAll(`.event__type-group`)[1];
+for (let i = 0; i < ACTIVITY_EVENT_COUNT; i++) {
+  render(eventTypeActivityElement, createEventTypeItemTemplate(), `beforeend`);
+}
+
 render(sortAndContentElement, createEventListTemplate(), `beforeend`);
 
 const dayEventsList = sortAndContentElement.querySelector(`.trip-days .trip-events__list`);
