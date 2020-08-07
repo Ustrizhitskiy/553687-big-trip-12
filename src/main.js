@@ -5,9 +5,12 @@ import {createSortTemplate} from "./view/main/sort";
 import {createEventCardTemplate} from "./view/main/event_card/event-card";
 import {createEventListTemplate} from "./view/main/event_list/event-list";
 import {createEventItemTemplate} from "./view/main/event_list/subcomponents/event-item";
-import {render} from "./app";
 
 const EVENT_COUNT = 3;
+
+export const render = (container, template, position) => {
+  container.insertAdjacentHTML(position, template)
+};
 
 const tripMainHeaderElement = document.querySelector(`.trip-main`);
 render(tripMainHeaderElement, createRouteAndCostTemplate(), `afterbegin`);
