@@ -22,56 +22,45 @@ export const render = (container, template, position) => {
   container.insertAdjacentHTML(position, template);
 };
 
-// Вставить маршрут и стоимость
 const tripMainHeaderElement = document.querySelector(`.trip-main`);
 render(tripMainHeaderElement, createRouteAndCostTemplate(), `afterbegin`);
 
-// Вставить меню
 const tabsAndFiltersElement = tripMainHeaderElement.querySelectorAll(`.trip-main__trip-controls h2`);
 const tabsTitleElement = tabsAndFiltersElement[0];
 render(tabsTitleElement, createMenuTabsTemplate(), `afterend`);
 
-// Вставить блок фильтров
 const filterTitleElement = tabsAndFiltersElement[1];
 render(filterTitleElement, createFilterListTemplate(), `afterend`);
 
-// Вставить сами фильтры
 const filterBlockElement = tripMainHeaderElement.querySelector(`.trip-filters`);
 for (let i = 0; i < FILTER_ITEMS.length; i++) {
   render(filterBlockElement, createFilterItemTemplate(FILTER_ITEMS[i]), `afterbegin`);
 }
 
-// Вставить основной блок (сортировка, карточка, список карточек)
 const sortAndContentElement = document.querySelector(`.page-body__page-main .trip-events`);
 const tripEventsTitleElement = sortAndContentElement.querySelector(`h2`);
 render(tripEventsTitleElement, createSortTemplate(), `afterend`);
 render(sortAndContentElement, createEventCardTemplate(), `beforeend`);
 
-// Вставить хедер карточки
 const eventCardElement = sortAndContentElement.querySelector(`.trip-events__item`);
 render(eventCardElement, createEventCardHeaderTemplate(), `afterbegin`);
 
-// Всавить первую группу эвентов (трансфер)
 const eventTypeListElement = eventCardElement.querySelector(`.event__type-list`);
 for (let i = 0; i < EVENT_TYPE_GROUPS.length; i++) {
   render(eventTypeListElement, createEventTypeGroupTemplate(EVENT_TYPE_GROUPS[i]), `beforeend`);
 }
-// Вставить доступные эвенты
+
 const eventTypeGroupElements = eventTypeListElement.querySelectorAll(`.event__type-group legend`);
-// Вставить первую группу эвентов
 for (let i = 0; i < TRANSFER_EVENTS.length; i++) {
   render(eventTypeGroupElements[0], createItemTypeTemplate(TRANSFER_EVENTS[i]), `afterend`);
 }
-// Вставить вторую группу эвентов
 for (let i = 0; i < ACTIVITY_EVENTS.length; i++) {
   render(eventTypeGroupElements[1], createItemTypeTemplate(ACTIVITY_EVENTS[i]), `afterend`);
 }
 
-// Вставить детали карточки
 const eventHeaderElement = eventCardElement.querySelector(`.event__header`);
 render(eventHeaderElement, createEventDetailsTemplate(), `afterend`);
 
-// Вставить фотки карточки
 const eventDetailsElement = eventCardElement.querySelector(`.event__details`);
 render(eventDetailsElement, createEventDestinationTemplate(), `afterend`);
 
