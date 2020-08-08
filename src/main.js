@@ -22,11 +22,9 @@ export const render = (container, template, position) => {
   container.insertAdjacentHTML(position, template);
 };
 
-// Вставить маршрут и стоимость
 const tripMainHeaderElement = document.querySelector(`.trip-main`);
 render(tripMainHeaderElement, createRouteAndCostTemplate(), `afterbegin`);
 
-// Вставить меню
 const tabsAndFiltersElement = tripMainHeaderElement.querySelectorAll(`.trip-main__trip-controls h2`);
 const tabsTitleElement = tabsAndFiltersElement[0];
 render(tabsTitleElement, createMenuTabsTemplate(), `afterend`);
