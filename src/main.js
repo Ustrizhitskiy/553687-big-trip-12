@@ -12,7 +12,7 @@ import {createItemTypeTemplate} from "./view/main/event_card/subcomponents/heade
 import {createEventDestinationTemplate} from "./view/main/event_card/subcomponents/event-destination";
 import {createEventListTemplate} from "./view/main/event_list/event-list";
 import {createEventItemTemplate} from "./view/main/event_list/subcomponents/event-item";
-import {generateEvent} from "./mock/event";
+import {generateEvent} from "./mock/eventMock";
 
 const EVENT_COUNT = 3;
 
@@ -77,6 +77,13 @@ render(sortAndContentElement, createEventListTemplate(), `beforeend`);
 
 const dayEventsList = sortAndContentElement.querySelector(`.trip-days .trip-events__list`);
 
-for (let i = 0; i < EVENT_COUNT; i++) {
-  render(dayEventsList, createEventItemTemplate(), `beforeend`);
+// for (let i = 0; i < EVENT_COUNT; i++) {
+//   render(dayEventsList, createEventItemTemplate(), `beforeend`);
+// }
+
+// Срендерим моки
+const events = new Array(EVENT_COUNT).fill().map(generateEvent);
+for (let i = 0; i < events.length; i++) {
+  render(dayEventsList, createEventItemTemplate(events[i]), `beforeend`);
 }
+// console.log(events);

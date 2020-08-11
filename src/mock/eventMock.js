@@ -1,12 +1,6 @@
+import {getRandomInteger} from "../util";
 import {TRANSFER_EVENTS, ACTIVITY_EVENTS} from "../const";
-import {generateOffer} from "./offer";
-
-const getRandomInteger = (a = 0, b = 1) => {
-  const lower = Math.ceil(Math.min(a, b));
-  const upper = Math.floor(Math.max(a, b));
-
-  return Math.floor(lower + Math.random() * (upper - lower + 1));
-};
+import {generateOffer} from "./offerMock";
 
 // Генерируем тип точки маршрута
 const generateTypeEvent = () => {
@@ -28,12 +22,16 @@ const generateCityDestination = () => {
 
 // Генерируем дату начала точки маршрута
 const generateStartAndEndDate = () => {
+  const daysCount = getRandomInteger(-50, 50);
   const startDate = new Date();
+  startDate.setDate(daysCount);
   startDate.setHours(getRandomInteger(0, 23), getRandomInteger(0, 59), getRandomInteger(0, 59), 1);
 
   let endDate;
   do {
+    const daysCount = getRandomInteger(0, 50);
     endDate = new Date();
+    endDate.setDate(daysCount);
     endDate.setHours(getRandomInteger(0, 23), getRandomInteger(0, 59), getRandomInteger(0, 59), 999);
   } while (endDate.getTime() <= startDate.getTime());
 

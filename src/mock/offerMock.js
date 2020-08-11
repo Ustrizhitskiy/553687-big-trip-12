@@ -1,16 +1,11 @@
-const getRandomInteger = (a = 0, b = 1) => {
-  const lower = Math.ceil(Math.min(a, b));
-  const upper = Math.floor(Math.max(a, b));
-
-  return Math.floor(lower + Math.random() * (upper - lower + 1));
-};
+import {getRandomInteger} from "../util";
 
 const allOffersAndTypes = new Map();
 allOffersAndTypes.set(`flightOffers`, [`Add luggage`, `Switch to comfort class`, `Add meal`, `Choose seats`]);
 allOffersAndTypes.set(`trainOffers`, [`Travel by train`]);
-allOffersAndTypes.set(`restaurantOffers`, [`tableOrder`, `windowSeat`]);
-allOffersAndTypes.set(`taxiOffers`, [`tips`]);
-allOffersAndTypes.set(`otherOffers`, []);
+allOffersAndTypes.set(`restaurantOffers`, [`Table order`, `Seat near the window`]);
+allOffersAndTypes.set(`taxiOffers`, [`Tips`]);
+allOffersAndTypes.set(`noOffers`, []);
 
 const generateOffersType =() => {
   const allOfferTypes = Array.from(allOffersAndTypes.keys());
@@ -37,6 +32,6 @@ export const generateOffer = () => {
   return {
     type: offersType,
     description: generateOfferDescription(offersType) || ``,
-    cost: generateOfferCost(),
+    cost: offersType === `noOffers` ? `0` : generateOfferCost(),
   }
 };
