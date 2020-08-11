@@ -1,6 +1,7 @@
 import {ACTIVITY_EVENTS} from "../../../../const";
+import {getOnlyTimeFromDate, getTimeFromStartToEnd} from "../../../../util";
 
-const isActivityType = (type) => {
+const getPreposition = (type) => {
   return ACTIVITY_EVENTS.some(elem => elem === type) ? `in` : `to`;
 };
 
@@ -13,14 +14,14 @@ export const createEventItemTemplate = (eventMock) => {
       <div class="event__type">
         <img class="event__type-icon" width="42" height="42" src="img/icons/${eventMock.routePointType.toLowerCase()}.png" alt="Event type icon">
       </div>
-      <h3 class="event__title">${eventMock.routePointType} ${isActivityType(eventMock.routePointType)} ${eventMock.city}</h3>
+      <h3 class="event__title">${eventMock.routePointType} ${getPreposition(eventMock.routePointType)} ${eventMock.city}</h3>
       <div class="event__schedule">
         <p class="event__time">
-          <time class="event__start-time" datetime="2019-03-18T10:30">${eventMock.startDate}</time>
+          <time class="event__start-time" datetime="2019-03-18T10:30">${getOnlyTimeFromDate(eventMock.startDate)}</time>
           &mdash;
-          <time class="event__end-time" datetime="2019-03-18T11:00">${eventMock.endDate}</time>
+          <time class="event__end-time" datetime="2019-03-18T11:00">${getOnlyTimeFromDate(eventMock.endDate)}</time>
         </p>
-        <p class="event__duration">30M</p>
+        <p class="event__duration">${getTimeFromStartToEnd(eventMock.startDate, eventMock.endDate)}</p>
       </div>
       <p class="event__price">
         &euro;&nbsp;<span class="event__price-value">${eventMock.cost}</span>

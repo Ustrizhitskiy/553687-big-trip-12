@@ -16,6 +16,8 @@ import {generateEvent} from "./mock/eventMock";
 
 const EVENT_COUNT = 3;
 
+const events = new Array(EVENT_COUNT).fill().map(generateEvent);
+
 export const render = (container, template, position) => {
   container.insertAdjacentHTML(position, template);
 };
@@ -77,13 +79,7 @@ render(sortAndContentElement, createEventListTemplate(), `beforeend`);
 
 const dayEventsList = sortAndContentElement.querySelector(`.trip-days .trip-events__list`);
 
-// for (let i = 0; i < EVENT_COUNT; i++) {
-//   render(dayEventsList, createEventItemTemplate(), `beforeend`);
-// }
-
 // Срендерим моки
-const events = new Array(EVENT_COUNT).fill().map(generateEvent);
 for (let i = 0; i < events.length; i++) {
   render(dayEventsList, createEventItemTemplate(events[i]), `beforeend`);
 }
-// console.log(events);
