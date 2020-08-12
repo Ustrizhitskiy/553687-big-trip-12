@@ -75,7 +75,7 @@ render(eventHeaderElement, createEventDetailsTemplate(), `afterend`);
 const eventDetailsElement = eventCardElement.querySelector(`.event__details`);
 render(eventDetailsElement, createEventDestinationTemplate(), `afterend`);
 
-render(sortAndContentElement, createEventListTemplate(), `beforeend`);
+render(sortAndContentElement, createEventListTemplate(events), `beforeend`);
 
 const dayEventsList = sortAndContentElement.querySelector(`.trip-days .trip-events__list`);
 
