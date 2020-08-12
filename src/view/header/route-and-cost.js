@@ -1,6 +1,6 @@
 export const createRouteAndCostTemplate = (events) => {
   let totalCost = 0;
-  events.forEach(event => {
+  events.forEach((event) => {
     totalCost += event.cost;
   });
 

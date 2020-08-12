@@ -22,16 +22,16 @@ const generateCityDestination = () => {
 
 // Генерируем дату начала точки маршрута
 const generateStartAndEndDate = () => {
-  const daysCount = getRandomInteger(-50, 50);
+  const startDaysCount = getRandomInteger(-50, 50);
   const startDate = new Date();
-  startDate.setDate(daysCount);
+  startDate.setDate(startDaysCount);
   startDate.setHours(getRandomInteger(0, 23), getRandomInteger(0, 59), getRandomInteger(0, 59), 1);
 
   let endDate;
   do {
-    const daysCount = getRandomInteger(0, 50);
+    const endDaysCount = getRandomInteger(-50, 50);
     endDate = new Date();
-    endDate.setDate(daysCount);
+    endDate.setDate(endDaysCount);
     endDate.setHours(getRandomInteger(0, 23), getRandomInteger(0, 59), getRandomInteger(0, 59), 999);
   } while (endDate.getTime() <= startDate.getTime());
 
@@ -62,7 +62,7 @@ const generateDestinationInfo = () => {
   let generatedPhotosSrc = [];
   const photoCount = getRandomInteger(0, 5);
   for (let i = 0; i < photoCount; i++) {
-    generatedPhotosSrc.push(`http://picsum.photos/248/152?r=${Math.random()}`)
+    generatedPhotosSrc.push(`http://picsum.photos/248/152?r=${Math.random()}`);
   }
 
   return {

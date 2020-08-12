@@ -9,7 +9,7 @@ export const getOnlyTimeFromDate = (date) => {
   const stringDate = date.toLocaleString();
   const dateTime = stringDate.substring(11, stringDate.length - 6);
 
-  return dateTime.length === 3 ? `0${dateTime}` : dateTime
+  return dateTime.length === 3 ? `0${dateTime}` : dateTime;
 };
 
 export const getFormattedDateString = (date) => {
@@ -26,7 +26,7 @@ export const getTimeFromStartToEnd = (startDate, endDate) => {
   const timeInMinutes = Math.trunc(timeInMilliseconds / 1000 / 60);
   const days = Math.trunc(timeInMinutes / 1440);
   const hours = Math.trunc((timeInMinutes - days * 1440) / 60);
-  const minutes = timeInMinutes - days * 1440 - hours  * 60;
+  const minutes = timeInMinutes - days * 1440 - hours * 60;
 
   return `${days > 0 ? days + `D` : ``} ${hours > 0 ? hours + `H` : ``} ${minutes > 0 ? minutes + `M` : ``}`.trim();
 };

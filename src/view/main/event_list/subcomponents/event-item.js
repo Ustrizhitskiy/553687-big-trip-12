@@ -7,18 +7,18 @@ export const createEventItemTemplate = (eventMock) => {
 
   const {routePointType, city, startDate, endDate, cost, offers} = eventMock;
 
-  const createEventItemOfferTemplate = (offers) => {
-    console.log(offers);
-    return offers.map((offer) =>
-    `<li class="event__offer">
-      <span class="event__offer-title">${offer.description}</span>
-      &plus;
-      &euro;&nbsp;<span class="event__offer-price">${offer.cost}</span>
-    </li>`).join(``);
+  const createEventItemOfferTemplate = (offerList) => {
+    console.log(offerList);
+    return offerList.map((offer) =>
+      `<li class="event__offer">
+        <span class="event__offer-title">${offer.description}</span>
+        &plus;
+        &euro;&nbsp;<span class="event__offer-price">${offer.cost}</span>
+      </li>`).join(``);
   };
 
   const getPreposition = (type) => {
-    return ACTIVITY_EVENTS.some(elem => elem === type) ? `in` : `to`;
+    return ACTIVITY_EVENTS.some((elem) => elem === type) ? `in` : `to`;
   };
 
   const offersTemplate = createEventItemOfferTemplate(offers);

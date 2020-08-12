@@ -7,11 +7,11 @@ allOffersAndTypes.set(`restaurantOffers`, [`Table order`, `Seat near the window`
 allOffersAndTypes.set(`taxiOffers`, [`Tips`]);
 allOffersAndTypes.set(`noOffers`, []);
 
-const generateOffersType =() => {
+const generateOffersType = () => {
   const allOfferTypes = Array.from(allOffersAndTypes.keys());
   const randomTypeIndex = getRandomInteger(0, 4);
 
-  return allOfferTypes[randomTypeIndex]
+  return allOfferTypes[randomTypeIndex];
 };
 
 const generateOfferDescription = (type) => {
@@ -27,7 +27,7 @@ const generateOfferCost = () => {
 };
 
 export const generateOffers = () => {
-  const offersCount = getRandomInteger(0,5);
+  const offersCount = getRandomInteger(0, 5);
   let offersList = [];
 
   for (let i = 0; i < offersCount; i++) {

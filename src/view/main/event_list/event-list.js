@@ -1,6 +1,6 @@
 export const createEventListTemplate = (events) => {
   const startDates = [];
-  events.forEach(event => {
+  events.forEach((event) => {
     startDates.push(event.startDate);
   });
   console.log(startDates);
