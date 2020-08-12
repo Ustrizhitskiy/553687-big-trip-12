@@ -26,12 +26,21 @@ const generateOfferCost = () => {
   return getRandomInteger(1, 1000);
 };
 
-export const generateOffer = () => {
-  const offersType = generateOffersType();
+export const generateOffers = () => {
+  const offersCount = getRandomInteger(0,5);
+  let offersList = [];
 
-  return {
-    type: offersType,
-    description: generateOfferDescription(offersType) || ``,
-    cost: offersType === `noOffers` ? `0` : generateOfferCost(),
+  for (let i = 0; i < offersCount; i++) {
+    const offersType = generateOffersType();
+
+    const offer = {
+      type: offersType,
+      description: generateOfferDescription(offersType) || ``,
+      cost: offersType === `noOffers` ? `0` : generateOfferCost(),
+    };
+
+    offersList.push(offer);
   }
+
+  return offersList;
 };

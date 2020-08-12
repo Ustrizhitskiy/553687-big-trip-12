@@ -1,6 +1,6 @@
 import {getRandomInteger} from "../util";
 import {TRANSFER_EVENTS, ACTIVITY_EVENTS} from "../const";
-import {generateOffer} from "./offerMock";
+import {generateOffers} from "./offerMock";
 
 // Генерируем тип точки маршрута
 const generateTypeEvent = () => {
@@ -80,7 +80,7 @@ export const generateEvent = () => {
     startDate: generatedStartAndEndDates[0],
     endDate: generatedStartAndEndDates[1],
     cost: generateCostEvent(),
-    offers: generateOffer(),
+    offers: generateOffers(),
     destinationInfo: generateDestinationInfo(),
   };
 };

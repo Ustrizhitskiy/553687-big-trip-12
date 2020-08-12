@@ -7,9 +7,21 @@ export const createEventItemTemplate = (eventMock) => {
 
   const {routePointType, city, startDate, endDate, cost, offers} = eventMock;
 
+  const createEventItemOfferTemplate = (offers) => {
+    console.log(offers);
+    return offers.map((offer) =>
+    `<li class="event__offer">
+      <span class="event__offer-title">${offer.description}</span>
+      &plus;
+      &euro;&nbsp;<span class="event__offer-price">${offer.cost}</span>
+    </li>`).join(``);
+  };
+
   const getPreposition = (type) => {
     return ACTIVITY_EVENTS.some(elem => elem === type) ? `in` : `to`;
   };
+
+  const offersTemplate = createEventItemOfferTemplate(offers);
 
   return (
     `<div class="event">
@@ -19,9 +31,9 @@ export const createEventItemTemplate = (eventMock) => {
       <h3 class="event__title">${routePointType} ${getPreposition(routePointType)} ${city}</h3>
       <div class="event__schedule">
         <p class="event__time">
-          <time class="event__start-time" datetime="2019-03-18T10:30">${getOnlyTimeFromDate(startDate)}</time>
+          <time class="event__start-time" datetime="${startDate}">${getOnlyTimeFromDate(startDate)}</time>
           &mdash;
-          <time class="event__end-time" datetime="2019-03-18T11:00">${getOnlyTimeFromDate(endDate)}</time>
+          <time class="event__end-time" datetime="${endDate}">${getOnlyTimeFromDate(endDate)}</time>
         </p>
         <p class="event__duration">${getTimeFromStartToEnd(startDate, endDate)}</p>
       </div>
@@ -30,11 +42,7 @@ export const createEventItemTemplate = (eventMock) => {
       </p>
       <h4 class="visually-hidden">Offers:</h4>
       <ul class="event__selected-offers">
-        <li class="event__offer">
-          <span class="event__offer-title">${offers.description}</span>
-          &plus;
-          &euro;&nbsp;<span class="event__offer-price">${offers.cost}</span>
-         </li>
+         ${offersTemplate}
       </ul>
       <button class="event__rollup-btn" type="button">
         <span class="visually-hidden">Open event</span>
