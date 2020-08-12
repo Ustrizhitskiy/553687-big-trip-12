@@ -24,7 +24,7 @@ export const render = (container, template, position) => {
 
 // Вставить маршрут и стоимость
 const tripMainHeaderElement = document.querySelector(`.trip-main`);
-render(tripMainHeaderElement, createRouteAndCostTemplate(), `afterbegin`);
+render(tripMainHeaderElement, createRouteAndCostTemplate(events), `afterbegin`);
 
 // Вставить меню
 const tabsAndFiltersElement = tripMainHeaderElement.querySelectorAll(`.trip-main__trip-controls h2`);
