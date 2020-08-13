@@ -8,7 +8,7 @@ import {createEventCardTemplate} from "./view/main/event_card/event-card";
 import {createEventListTemplate} from "./view/main/event_list/event-list";
 import {generateEvent} from "./mock/eventMock";
 
-const EVENT_COUNT = 3;
+const EVENT_COUNT = 25;
 
 const events = new Array(EVENT_COUNT).fill().map(generateEvent);
 
