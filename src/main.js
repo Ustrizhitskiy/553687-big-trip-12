@@ -34,5 +34,5 @@ for (let i = 0; i < FILTER_ITEMS.length; i++) {
 const sortAndContentElement = document.querySelector(`.page-body__page-main .trip-events`);
 const tripEventsTitleElement = sortAndContentElement.querySelector(`h2`);
 render(tripEventsTitleElement, createSortTemplate(), `afterend`);
-render(sortAndContentElement, createEventCardTemplate(), `beforeend`);
+render(sortAndContentElement, createEventCardTemplate(events[0]), `beforeend`);
 render(sortAndContentElement, createEventListTemplate(events), `beforeend`);
