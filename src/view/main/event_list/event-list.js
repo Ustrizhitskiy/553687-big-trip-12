@@ -1,9 +1,12 @@
+import {createEventItemTemplate} from "./subcomponents/event-item";
+
 export const createEventListTemplate = (events) => {
   const startDates = [];
   events.forEach((event) => {
     startDates.push(event.startDate);
   });
-  console.log(startDates);
+
+  const eventList = events.map((event) => createEventItemTemplate(event)).join(``);
 
   const day = startDates[0].getDate();
   const month = startDates[0].toString().substring(4, 7).toUpperCase();
@@ -17,6 +20,7 @@ export const createEventListTemplate = (events) => {
           <time class="day__date" datetime="${year}-${month}-${day}">${month} ${year}</time>
         </div>
         <ul class="trip-events__list">
+        ${eventList}
         </ul>
      </ul>`
   );

@@ -2,13 +2,9 @@ import {ACTIVITY_EVENTS} from "../../../../const";
 import {getOnlyTimeFromDate, getTimeFromStartToEnd} from "../../../../util";
 
 export const createEventItemTemplate = (eventMock) => {
-  console.log(eventMock);
-  console.log((eventMock.endDate - eventMock.startDate));
-
   const {routePointType, city, startDate, endDate, cost, offers} = eventMock;
 
   const createEventItemOfferTemplate = (offerList) => {
-    console.log(offerList);
     return offerList.map((offer) =>
       `<li class="event__offer">
         <span class="event__offer-title">${offer.description}</span>

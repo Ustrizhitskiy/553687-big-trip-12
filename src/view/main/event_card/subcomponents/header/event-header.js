@@ -1,3 +1,7 @@
+import {createEventTypeListTemplate} from "./subcomponents/event-type-list";
+
+const eventTypeList = createEventTypeListTemplate();
+
 export const createEventCardHeaderTemplate = () => {
   return (
     `<header class="event__header">
@@ -8,6 +12,7 @@ export const createEventCardHeaderTemplate = () => {
         </label>
         <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox">
         <div class="event__type-list">
+          ${eventTypeList}
         </div>
       </div>
       <div class="event__field-group  event__field-group--destination">
