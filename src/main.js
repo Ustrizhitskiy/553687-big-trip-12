@@ -33,6 +33,10 @@ for (let i = 0; i < FILTER_ITEMS.length; i++) {
 
 const sortAndContentElement = document.querySelector(`.page-body__page-main .trip-events`);
 const tripEventsTitleElement = sortAndContentElement.querySelector(`h2`);
-render(tripEventsTitleElement, createSortTemplate(), `afterend`);
+
+// Получаем тип сортировки. Пока захаркодим по дате (по умолчанию)
+const sortType = `event`;
+render(tripEventsTitleElement, createSortTemplate(sortType), `afterend`);
+
 render(sortAndContentElement, createEventCardTemplate(events[0]), `beforeend`);
-render(sortAndContentElement, createEventListTemplate(events), `beforeend`);
+render(sortAndContentElement, createEventListTemplate(events, sortType), `beforeend`);
