@@ -1,4 +1,4 @@
-export   const createEventItemOfferTemplate = (offer) => {
+export const createEventItemOfferTemplate = (offer) => {
   return (
     `<li class="event__offer">
         <span class="event__offer-title">${offer.description}</span>

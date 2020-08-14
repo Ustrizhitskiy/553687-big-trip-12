@@ -4,18 +4,15 @@ export const createRouteAndCostTemplate = (events) => {
       const {city: firstCity} = sortedEventsByDate[0];
       const secondCity = sortedEventsByDate.length > 3 ? `&mdash; ... &mdash;` : ` &mdash; ${sortedEventsByDate[1].city} &mdash; `;
       const {city: lastCity} = sortedEventsByDate[sortedEventsByDate.length - 1];
-      return `${firstCity} ${secondCity} ${lastCity}`
-    }
-    else if (sortedEventsByDate.length === 2) {
+      return `${firstCity} ${secondCity} ${lastCity}`;
+    } else if (sortedEventsByDate.length === 2) {
       const {city: firstCity} = sortedEventsByDate[0];
       const {city: lastCity} = sortedEventsByDate[1];
-      return `${firstCity} &mdash; ${lastCity}`
-    }
-    else if (sortedEventsByDate.length === 1) {
+      return `${firstCity} &mdash; ${lastCity}`;
+    } else if (sortedEventsByDate.length === 1) {
       const {city} = sortedEventsByDate[0];
       return `${city}`;
-    }
-    else {
+    } else {
       return ``;
     }
   };
@@ -24,19 +21,17 @@ export const createRouteAndCostTemplate = (events) => {
     if (sortedEventsByDate.length >= 2) {
       const {startDate} = sortedEventsByDate[0];
       const {endDate} = sortedEventsByDate[sortedEventsByDate.length - 1];
-      const firstDay = `${startDate.getDate()} ${startDate.toString().substring(4,7)}`;
+      const firstDay = `${startDate.getDate()} ${startDate.toString().substring(4, 7)}`;
       const lastDay = `${endDate.getDate()} ${endDate.toString().substring(4, 7)}`;
-      return `${firstDay} &mdash; ${lastDay}`
-    }
-    else if (sortedEventsByDate.length === 1) {
+      return `${firstDay} &mdash; ${lastDay}`;
+    } else if (sortedEventsByDate.length === 1) {
       const {startDate} = sortedEventsByDate[0];
       const {endDate} = sortedEventsByDate[0];
-      const firstDay = `${startDate.getDate()} ${startDate.toString().substring(4,7)}`;
+      const firstDay = `${startDate.getDate()} ${startDate.toString().substring(4, 7)}`;
       const lastDay = `${endDate.getDate()} ${endDate.toString().substring(4, 7)}`;
       return startDate.getDate() !== endDate.getDate() ? `${firstDay} &mdash; ${lastDay}` : `${firstDay}`;
-    }
-    else {
-      return ``
+    } else {
+      return ``;
     }
   };
 
