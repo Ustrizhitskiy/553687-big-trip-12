@@ -26,8 +26,8 @@ export const createTripDaysTemplate = (events, sortType) => {
       `<li class="trip-days__item  day">
         <div class="day__info">
           <span class="day__counter">${groupDate.getDate()}</span>
-          <time class="day__date" datetime="${groupDate.getFullYear()}-${groupDate.getMonth()}-${groupDate.getDate()}">
-            ${groupDate.getMonth()} ${groupDate.getFullYear()}
+          <time class="day__date" datetime="${groupDate.getFullYear()}-${groupDate.getMonth() + 1}-${groupDate.getDate()}">
+            ${groupDate.getMonth() + 1} ${groupDate.getFullYear()}
           </time>
         </div>
         <ul class="trip-events__list">
