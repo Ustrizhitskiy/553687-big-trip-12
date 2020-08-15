@@ -30,4 +30,4 @@ const tripEventsTitleElement = sortAndContentElement.querySelector(`h2`);
 render(tripEventsTitleElement, createSortTemplate(SORT_ITEMS), `afterend`);
 
 render(sortAndContentElement, createEventCardTemplate(events[0]), `beforeend`);
-render(sortAndContentElement, createEventListTemplate(events, SORT_ITEMS[0]), `beforeend`);
+render(sortAndContentElement, createEventListTemplate(events, SORT_ITEMS[0], FILTER_ITEMS[0]), `beforeend`);

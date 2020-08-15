@@ -1,6 +1,6 @@
 import {createTripDaysTemplate} from "./subcomponents/trip-day-list";
 
-export const createEventListTemplate = (events, sortType) => {
+export const createEventListTemplate = (events, sortType, filter) => {
   let eventsCopy = events.slice();
 
   switch (sortType) {
@@ -17,7 +17,24 @@ export const createEventListTemplate = (events, sortType) => {
       eventsCopy.sort((previousEvent, nextEvent) => previousEvent.startDate - nextEvent.startDate);
   }
 
-  const tripDays = createTripDaysTemplate(eventsCopy, sortType);
+  let filteredEvents = [];
+  const dateNow = new Date().getTime();
+  switch (filter) {
+    case `future`:
+      filteredEvents = eventsCopy.filter((event) => event.startDate > dateNow);
+      console.log(eventsCopy.length);
+      console.log(filteredEvents.length);
+      break;
+    case `past`:
+      filteredEvents = eventsCopy.filter((event) => event.endDate < dateNow);
+      console.log(eventsCopy.length);
+      console.log(filteredEvents.length);
+      break;
+    default:
+      filteredEvents = eventsCopy;
+  }
+
+  const tripDays = createTripDaysTemplate(filteredEvents, sortType, filter);
 
   return (
     `<ul class="trip-days">
