@@ -1,5 +1,4 @@
 import {createEventItemTemplate} from "./event-item";
-import {SortType} from "../../../../util";
 
 export const createTripDaysTemplate = (events, sortType) => {
   const getEventList = (sortedEvents) => {
@@ -48,7 +47,7 @@ export const createTripDaysTemplate = (events, sortType) => {
     );
   };
 
-  if (sortType === SortType.EVENT) {
+  if (sortType === `event`) {
     return createEventListWithDay();
   } else {
     return createEventListWithoutDay();

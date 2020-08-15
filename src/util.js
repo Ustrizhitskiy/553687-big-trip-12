@@ -30,9 +30,3 @@ export const getTimeFromStartToEnd = (startDate, endDate) => {
 
   return `${days > 0 ? days + `D` : ``} ${hours > 0 ? hours + `H` : ``} ${minutes > 0 ? minutes + `M` : ``}`.trim();
 };
-
-export const SortType = {
-  EVENT: `event`,
-  TIME: `time`,
-  PRICE: `price`
-};

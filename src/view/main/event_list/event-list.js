@@ -1,17 +1,16 @@
 import {createTripDaysTemplate} from "./subcomponents/trip-day-list";
-import {SortType} from "../../../util";
 
 export const createEventListTemplate = (events, sortType) => {
   let eventsCopy = events.slice();
 
   switch (sortType) {
-    case SortType.EVENT:
+    case `event`:
       eventsCopy.sort((previousEvent, nextEvent) => previousEvent.startDate - nextEvent.startDate);
       break;
-    case SortType.PRICE:
+    case `price`:
       eventsCopy.sort((previousEvent, nextEvent) => nextEvent.cost - previousEvent.cost);
       break;
-    case SortType.TIME:
+    case `time`:
       eventsCopy.sort((previousEvent, nextEvent) => (nextEvent.endDate - nextEvent.startDate) - (previousEvent.endDate - previousEvent.startDate));
       break;
     default:

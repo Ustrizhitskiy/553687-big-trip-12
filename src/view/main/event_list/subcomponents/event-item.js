@@ -10,7 +10,7 @@ export const createEventItemTemplate = (eventMock) => {
   };
 
   const preposition = getPreposition(routePointType);
-  const visuallyOffers = offers.slice(0, 2);
+  const visuallyOffers = offers.slice(0, 3);
   const offersTemplate = visuallyOffers.map((offer) => createEventItemOfferTemplate(offer)).join(``);
 
   return (

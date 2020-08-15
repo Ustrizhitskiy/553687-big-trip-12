@@ -1,9 +1,8 @@
-import {FILTER_ITEMS} from "./const";
+import {FILTER_ITEMS, SORT_ITEMS} from "./const";
 import {createRouteAndCostTemplate} from "./view/header/route-and-cost";
 import {createMenuTabsTemplate} from "./view/header/menu-tabs";
 import {createFilterListTemplate} from "./view/header/filter/filter-list";
-import {createFilterItemTemplate} from "./view/header/filter/subcomponents/filter-item";
-import {createSortTemplate} from "./view/main/sort";
+import {createSortTemplate} from "./view/main/sort-list";
 import {createEventCardTemplate} from "./view/main/event_card/event-card";
 import {createEventListTemplate} from "./view/main/event_list/event-list";
 import {generateEvent} from "./mock/eventMock";
@@ -24,19 +23,11 @@ const tabsTitleElement = tabsAndFiltersElement[0];
 render(tabsTitleElement, createMenuTabsTemplate(), `afterend`);
 
 const filterTitleElement = tabsAndFiltersElement[1];
-render(filterTitleElement, createFilterListTemplate(), `afterend`);
-
-const filterBlockElement = tripMainHeaderElement.querySelector(`.trip-filters`);
-for (let i = 0; i < FILTER_ITEMS.length; i++) {
-  render(filterBlockElement, createFilterItemTemplate(FILTER_ITEMS[i]), `afterbegin`);
-}
+render(filterTitleElement, createFilterListTemplate(FILTER_ITEMS), `afterend`);
 
 const sortAndContentElement = document.querySelector(`.page-body__page-main .trip-events`);
 const tripEventsTitleElement = sortAndContentElement.querySelector(`h2`);
-
-// Получаем тип сортировки. Пока захаркодим по дате (по умолчанию)
-const sortType = `event`;
-render(tripEventsTitleElement, createSortTemplate(sortType), `afterend`);
+render(tripEventsTitleElement, createSortTemplate(SORT_ITEMS), `afterend`);
 
 render(sortAndContentElement, createEventCardTemplate(events[0]), `beforeend`);
-render(sortAndContentElement, createEventListTemplate(events, sortType), `beforeend`);
+render(sortAndContentElement, createEventListTemplate(events, SORT_ITEMS[0]), `beforeend`);
