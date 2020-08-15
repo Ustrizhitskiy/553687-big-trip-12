@@ -1,10 +1,13 @@
-import {getRandomInteger} from "../../../../util";
-
 export const createEventDetailsTemplate = (event) => {
   const {offers} = event;
-  const offersList = offers.map((offer) =>
+  const offersList = offers.map((offer, index) =>
     `<div class="event__offer-selector">
-      <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-1" type="checkbox" name="event-offer-${offer.type}" ${getRandomInteger(0, 1) === 1 ? `checked` : ``}>
+      <input
+        class="event__offer-checkbox  visually-hidden"
+        id="event-offer-luggage-1"
+        type="checkbox"
+        name="event-offer-${offer.type}"
+        ${index === 0 ? `checked` : ``}>
       <label class="event__offer-label" for="event-offer-${offer.type}-1">
         <span class="event__offer-title">${offer.description}</span>
         &plus;

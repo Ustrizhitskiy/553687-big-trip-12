@@ -2,13 +2,13 @@ import {createEventTypeListTemplate} from "./subcomponents/event-type-list";
 import {ACTIVITY_EVENTS} from "../../../../../const";
 import {getFormattedDateString} from "../../../../../util";
 
-const eventTypeList = createEventTypeListTemplate();
-
-const getPreposition = (type) => {
-  return ACTIVITY_EVENTS.some((elem) => elem === type) ? `in` : `to`;
-};
-
 export const createEventCardHeaderTemplate = (event) => {
+  const eventTypeList = createEventTypeListTemplate();
+
+  const getPreposition = (type) => {
+    return ACTIVITY_EVENTS.some((elem) => elem === type) ? `in` : `to`;
+  };
+
   const {routePointType, city, startDate, endDate, cost} = event;
   const preposition = getPreposition(routePointType);
 
