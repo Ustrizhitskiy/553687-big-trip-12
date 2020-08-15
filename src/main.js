@@ -1,29 +1,23 @@
+import {FILTER_ITEMS} from "./const";
 import {createRouteAndCostTemplate} from "./view/header/route-and-cost";
 import {createMenuTabsTemplate} from "./view/header/menu-tabs";
 import {createFilterListTemplate} from "./view/header/filter/filter-list";
 import {createFilterItemTemplate} from "./view/header/filter/subcomponents/filter-item";
 import {createSortTemplate} from "./view/main/sort";
 import {createEventCardTemplate} from "./view/main/event_card/event-card";
-import {createEventCardHeaderTemplate} from "./view/main/event_card/subcomponents/header/event-header";
-import {createEventDetailsTemplate} from "./view/main/event_card/subcomponents/event-details";
-import {createEventTypeGroupTemplate} from "./view/main/event_card/subcomponents/header/subcomponents/event-type-group";
-import {createItemTypeTemplate} from "./view/main/event_card/subcomponents/header/subcomponents/event-type-item";
-import {createEventDestinationTemplate} from "./view/main/event_card/subcomponents/event-destination";
 import {createEventListTemplate} from "./view/main/event_list/event-list";
-import {createEventItemTemplate} from "./view/main/event_list/subcomponents/event-item";
+import {generateEvent} from "./mock/eventMock";
 
-const FILTER_ITEMS = [`Everything`, `Future`, `Past`];
-const EVENT_TYPE_GROUPS = [`Transfer`, `Activity`];
-const TRANSFER_EVENTS = [`Taxi`, `Bus`, `Train`, `Ship`, `Transport`, `Drive`, `Flight`];
-const ACTIVITY_EVENTS = [`Restaurant`, `Sightseeing`, `Check-in`];
-const EVENT_COUNT = 3;
+const EVENT_COUNT = 25;
+
+const events = new Array(EVENT_COUNT).fill().map(generateEvent);
 
 export const render = (container, template, position) => {
   container.insertAdjacentHTML(position, template);
 };
 
 const tripMainHeaderElement = document.querySelector(`.trip-main`);
-render(tripMainHeaderElement, createRouteAndCostTemplate(), `afterbegin`);
+render(tripMainHeaderElement, createRouteAndCostTemplate(events), `afterbegin`);
 
 const tabsAndFiltersElement = tripMainHeaderElement.querySelectorAll(`.trip-main__trip-controls h2`);
 const tabsTitleElement = tabsAndFiltersElement[0];
@@ -39,35 +33,10 @@ for (let i = 0; i < FILTER_ITEMS.length; i++) {
 
 const sortAndContentElement = document.querySelector(`.page-body__page-main .trip-events`);
 const tripEventsTitleElement = sortAndContentElement.querySelector(`h2`);
-render(tripEventsTitleElement, createSortTemplate(), `afterend`);
-render(sortAndContentElement, createEventCardTemplate(), `beforeend`);
 
-const eventCardElement = sortAndContentElement.querySelector(`.trip-events__item`);
-render(eventCardElement, createEventCardHeaderTemplate(), `afterbegin`);
+// Получаем тип сортировки. Пока захаркодим по дате (по умолчанию)
+const sortType = `event`;
+render(tripEventsTitleElement, createSortTemplate(sortType), `afterend`);
 
-const eventTypeListElement = eventCardElement.querySelector(`.event__type-list`);
-for (let i = 0; i < EVENT_TYPE_GROUPS.length; i++) {
-  render(eventTypeListElement, createEventTypeGroupTemplate(EVENT_TYPE_GROUPS[i]), `beforeend`);
-}
-
-const eventTypeGroupElements = eventTypeListElement.querySelectorAll(`.event__type-group legend`);
-for (let i = 0; i < TRANSFER_EVENTS.length; i++) {
-  render(eventTypeGroupElements[0], createItemTypeTemplate(TRANSFER_EVENTS[i]), `afterend`);
-}
-for (let i = 0; i < ACTIVITY_EVENTS.length; i++) {
-  render(eventTypeGroupElements[1], createItemTypeTemplate(ACTIVITY_EVENTS[i]), `afterend`);
-}
-
-const eventHeaderElement = eventCardElement.querySelector(`.event__header`);
-render(eventHeaderElement, createEventDetailsTemplate(), `afterend`);
-
-const eventDetailsElement = eventCardElement.querySelector(`.event__details`);
-render(eventDetailsElement, createEventDestinationTemplate(), `afterend`);
-
-render(sortAndContentElement, createEventListTemplate(), `beforeend`);
-
-const dayEventsList = sortAndContentElement.querySelector(`.trip-days .trip-events__list`);
-
-for (let i = 0; i < EVENT_COUNT; i++) {
-  render(dayEventsList, createEventItemTemplate(), `beforeend`);
-}
+render(sortAndContentElement, createEventCardTemplate(events[0]), `beforeend`);
+render(sortAndContentElement, createEventListTemplate(events, sortType), `beforeend`);

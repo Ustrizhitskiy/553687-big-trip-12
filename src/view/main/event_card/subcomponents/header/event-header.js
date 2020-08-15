@@ -1,4 +1,17 @@
-export const createEventCardHeaderTemplate = () => {
+import {createEventTypeListTemplate} from "./subcomponents/event-type-list";
+import {ACTIVITY_EVENTS} from "../../../../../const";
+import {getFormattedDateString} from "../../../../../util";
+
+const eventTypeList = createEventTypeListTemplate();
+
+const getPreposition = (type) => {
+  return ACTIVITY_EVENTS.some((elem) => elem === type) ? `in` : `to`;
+};
+
+export const createEventCardHeaderTemplate = (event) => {
+  const {routePointType, city, startDate, endDate, cost} = event;
+  const preposition = getPreposition(routePointType);
+
   return (
     `<header class="event__header">
       <div class="event__type-wrapper">
@@ -8,13 +21,14 @@ export const createEventCardHeaderTemplate = () => {
         </label>
         <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox">
         <div class="event__type-list">
+          ${eventTypeList}
         </div>
       </div>
       <div class="event__field-group  event__field-group--destination">
         <label class="event__label  event__type-output" for="event-destination-1">
-          Flight to
+          ${routePointType} ${preposition}
         </label>
-        <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="Chamonix" list="destination-list-1">
+        <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${city}" list="destination-list-1">
         <datalist id="destination-list-1">
           <option value="Amsterdam"></option>
           <option value="Geneva"></option>
@@ -25,19 +39,19 @@ export const createEventCardHeaderTemplate = () => {
         <label class="visually-hidden" for="event-start-time-1">
           From
         </label>
-        <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="18/03/19 12:25">
+        <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${getFormattedDateString(startDate)}">
         &mdash;
         <label class="visually-hidden" for="event-end-time-1">
           To
         </label>
-        <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="18/03/19 13:35">
+        <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${getFormattedDateString(endDate)}">
       </div>
       <div class="event__field-group  event__field-group--price">
         <label class="event__label" for="event-price-1">
           <span class="visually-hidden">Price</span>
           &euro;
         </label>
-        <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="160">
+        <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${cost}">
       </div>
       <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
       <button class="event__reset-btn" type="reset">Cancel</button>
