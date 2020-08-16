@@ -2,14 +2,14 @@ import {createEventCardHeaderTemplate} from "./subcomponents/header/event-header
 import {createEventDetailsTemplate} from "./subcomponents/event-details";
 import {createEventDestinationTemplate} from "./subcomponents/event-destination";
 
-export const createEventCardTemplate = (event = {}) => {
+export const createEventCardTemplate = (event) => {
   let eventForRender;
-  if (event.length === 0) {
+  if (!event) {
     eventForRender = {
       routePointType: `Flight`,
       city: ``,
-      startDate: new Date(),
-      endDate: new Date(),
+      startDate: null,
+      endDate: null,
       cost: 0,
       offers: [],
       destinationInfo: {
