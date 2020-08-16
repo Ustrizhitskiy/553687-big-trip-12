@@ -1,6 +1,7 @@
 import {createSortItemTemplate} from "./sort-item";
+import {createElement} from "../../util";
 
-export const createSortTemplate = (sortItems) => {
+const createSortTemplate = (sortItems) => {
 
   const sortItemsTemplate = sortItems
     .map((sort, index) => createSortItemTemplate(sort, index === 0))
@@ -14,3 +15,26 @@ export const createSortTemplate = (sortItems) => {
     </form>`
   );
 };
+
+export default class SortList {
+  constructor(sortList) {
+    this._sortList = sortList;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createSortTemplate(this._sortList);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

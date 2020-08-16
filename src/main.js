@@ -1,33 +1,30 @@
 import {FILTER_ITEMS, SORT_ITEMS} from "./const";
-import {createRouteAndCostTemplate} from "./view/header/route-and-cost";
-import {createMenuTabsTemplate} from "./view/header/menu-tabs";
-import {createFilterListTemplate} from "./view/header/filter/filter-list";
-import {createSortTemplate} from "./view/main/sort-list";
-import {createEventCardTemplate} from "./view/main/event_card/event-card";
-import {createEventListTemplate} from "./view/main/event_list/event-list";
 import {generateEvent} from "./mock/eventMock";
+import {render, RenderPosition} from "./util";
+import RouteAndCostView from "./view/header/route-and-cost";
+import MenuTabs from "./view/header/menu-tabs";
+import FilterList from "./view/header/filter/filter-list";
+import SortList from "./view/main/sort-list";
+import EventList from "./view/main/event_list/event-list";
+import EventCard from "./view/main/event_card/event-card";
 
 const EVENT_COUNT = 25;
 
 const events = new Array(EVENT_COUNT).fill().map(generateEvent);
 
-export const render = (container, template, position) => {
-  container.insertAdjacentHTML(position, template);
-};
-
 const tripMainHeaderElement = document.querySelector(`.trip-main`);
-render(tripMainHeaderElement, createRouteAndCostTemplate(events), `afterbegin`);
+render(tripMainHeaderElement, new RouteAndCostView(events).getElement(), RenderPosition.AFTERBEGIN);
 
 const tabsAndFiltersElement = tripMainHeaderElement.querySelectorAll(`.trip-main__trip-controls h2`);
 const tabsTitleElement = tabsAndFiltersElement[0];
-render(tabsTitleElement, createMenuTabsTemplate(), `afterend`);
+render(tabsTitleElement, new MenuTabs().getElement(), RenderPosition.AFTEREND);
 
 const filterTitleElement = tabsAndFiltersElement[1];
-render(filterTitleElement, createFilterListTemplate(FILTER_ITEMS), `afterend`);
+render(filterTitleElement, new FilterList(FILTER_ITEMS).getElement(), RenderPosition.AFTEREND);
 
 const sortAndContentElement = document.querySelector(`.page-body__page-main .trip-events`);
 const tripEventsTitleElement = sortAndContentElement.querySelector(`h2`);
-render(tripEventsTitleElement, createSortTemplate(SORT_ITEMS), `afterend`);
+render(tripEventsTitleElement, new SortList(SORT_ITEMS).getElement(), RenderPosition.AFTEREND);
 
-render(sortAndContentElement, createEventCardTemplate(events[0]), `beforeend`);
-render(sortAndContentElement, createEventListTemplate(events, SORT_ITEMS[0], FILTER_ITEMS[0]), `beforeend`);
+render(sortAndContentElement, new EventCard(events[0]).getElement(), RenderPosition.BEFOREEND);
+render(sortAndContentElement, new EventList(events, SORT_ITEMS[0], FILTER_ITEMS[0]).getElement(), RenderPosition.BEFOREEND);

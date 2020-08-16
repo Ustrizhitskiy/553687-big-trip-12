@@ -1,6 +1,7 @@
 import {createTripDaysTemplate} from "./subcomponents/trip-day-list";
+import {createElement} from "../../../util";
 
-export const createEventListTemplate = (events, sortType, filter) => {
+const createEventListTemplate = (events, sortType, filter) => {
   let eventsCopy = events.slice();
 
   switch (sortType) {
@@ -42,3 +43,28 @@ export const createEventListTemplate = (events, sortType, filter) => {
      </ul>`
   );
 };
+
+export default class EventList {
+  constructor(events, sortType, filter) {
+    this._events = events;
+    this._sortType = sortType;
+    this._filter = filter;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createEventListTemplate(this._events, this._sortType, this._filter);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

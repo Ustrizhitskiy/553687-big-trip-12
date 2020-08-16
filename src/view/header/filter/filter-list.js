@@ -1,6 +1,7 @@
 import {createFilterItemTemplate} from "./filter-item";
+import {createElement} from "../../../util";
 
-export const createFilterListTemplate = (filterItems) => {
+const createFilterListTemplate = (filterItems) => {
   const filterItemsTemplate = filterItems
     .map((filter, index) => createFilterItemTemplate(filter, index === 0))
     .join(``);
@@ -12,3 +13,26 @@ export const createFilterListTemplate = (filterItems) => {
     </form>`
   );
 };
+
+export default class FilterList {
+  constructor(filters) {
+    this._filters = filters;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createFilterListTemplate(this._filters);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
