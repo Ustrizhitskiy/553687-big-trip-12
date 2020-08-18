@@ -1,10 +1,16 @@
-import {createTripDaysTemplate} from "./subcomponents/trip-day-list";
 import {createElement} from "../../../util";
 
-const createEventListTemplate = (events, sortType, filter) => {
+const createEventListTemplate = () => {
+  return (
+    `<ul class="trip-days">
+     </ul>`
+  );
+};
+
+const getSortedAndFilteredEvents = (events, sort, filter) => {
   let eventsCopy = events.slice();
 
-  switch (sortType) {
+  switch (sort) {
     case `event`:
       eventsCopy.sort((previousEvent, nextEvent) => previousEvent.startDate - nextEvent.startDate);
       break;
@@ -35,25 +41,36 @@ const createEventListTemplate = (events, sortType, filter) => {
       filteredEvents = eventsCopy;
   }
 
-  const tripDays = createTripDaysTemplate(filteredEvents, sortType, filter);
+  return filteredEvents;
+};
 
-  return (
-    `<ul class="trip-days">
-      ${tripDays}
-     </ul>`
-  );
+const getListOfDayWithEvents = (events) => {
+  let newDay = events[0].startDate;
+  let allDaysWithEventsList = new Map();
+  allDaysWithEventsList.set(newDay, []);
+  let firstDatePerDay = events[0].startDate;
+
+  events.forEach((event) => {
+    if (event.startDate.getDate() === firstDatePerDay.getDate()) {
+      allDaysWithEventsList.get(newDay).push(event);
+    } else {
+      newDay = event.startDate;
+      allDaysWithEventsList.set(newDay, [event]);
+      firstDatePerDay = event.startDate;
+    }
+  });
+
+  return allDaysWithEventsList;
 };
 
 export default class EventList {
   constructor(events, sortType, filter) {
-    this._events = events;
-    this._sortType = sortType;
-    this._filter = filter;
+    this._events = getSortedAndFilteredEvents(events, sortType, filter);
     this._element = null;
   }
 
   getTemplate() {
-    return createEventListTemplate(this._events, this._sortType, this._filter);
+    return createEventListTemplate();
   }
 
   getElement() {
@@ -62,6 +79,10 @@ export default class EventList {
     }
 
     return this._element;
+  }
+
+  getTripDayLists() {
+    return getListOfDayWithEvents(this._events);
   }
 
   removeElement() {

@@ -22,14 +22,14 @@ const generateCityDestination = () => {
 
 // Генерируем дату начала точки маршрута
 const generateStartAndEndDate = () => {
-  const startDaysCount = getRandomInteger(-50, 50);
+  const startDaysCount = getRandomInteger(-5, 5);
   const startDate = new Date();
   startDate.setDate(startDaysCount);
   startDate.setHours(getRandomInteger(0, 23), getRandomInteger(0, 59), getRandomInteger(0, 59), 1);
 
   let endDate;
   do {
-    const endDaysCount = getRandomInteger(-50, 50);
+    const endDaysCount = getRandomInteger(-5, 5);
     endDate = new Date();
     endDate.setDate(endDaysCount);
     endDate.setHours(getRandomInteger(0, 23), getRandomInteger(0, 59), getRandomInteger(0, 59), 999);

@@ -30,7 +30,7 @@ const createEventCardTemplate = (event) => {
   );
 };
 
-export default class EventCard {
+export default class EventEditCard {
   constructor(tripEvent) {
     this._tripEvent = tripEvent || CARD_BLANK;
     this._element = null;
