@@ -1,5 +1,7 @@
-export const createEventDestinationTemplate = (event) => {
-  const {description, photosSrc} = event.destinationInfo;
+import {createElement} from "../../../../util";
+
+const createEventDestinationTemplate = (destinationInfo) => {
+  const {description, photosSrc} = destinationInfo;
 
   const photos = photosSrc.map((src) =>
     `<img class="event__photo" src="${src}" alt="Event photo">`
@@ -18,3 +20,26 @@ export const createEventDestinationTemplate = (event) => {
       </section>`
   );
 };
+
+export default class EventDestination {
+  constructor(destinationInfo) {
+    this._destinationInfo = destinationInfo;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createEventDestinationTemplate(this._destinationInfo);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

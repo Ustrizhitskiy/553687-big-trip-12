@@ -1,9 +1,9 @@
-import {createFilterItemTemplate} from "./filter-item";
 import {createElement} from "../../../util";
+import Filter from "./filter-item";
 
 const createFilterListTemplate = (filterItems) => {
   const filterItemsTemplate = filterItems
-    .map((filter, index) => createFilterItemTemplate(filter, index === 0))
+    .map((filter, index) => new Filter(filter, index === 0).getTemplate())
     .join(``);
 
   return (

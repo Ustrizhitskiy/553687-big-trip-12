@@ -1,5 +1,6 @@
-export const createEventDetailsTemplate = (event) => {
-  const {offers} = event;
+import {createElement} from "../../../../util";
+
+const createEventDetailsTemplate = (offers) => {
   const offersList = offers.map((offer, index) =>
     `<div class="event__offer-selector">
       <input
@@ -27,3 +28,26 @@ export const createEventDetailsTemplate = (event) => {
       </section>`
   );
 };
+
+export default class EventDetails {
+  constructor(offers) {
+    this._offers = offers;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createEventDetailsTemplate(this._offers);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

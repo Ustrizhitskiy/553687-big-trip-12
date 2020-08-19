@@ -1,7 +1,7 @@
-import {createEventCardHeaderTemplate} from "./subcomponents/header/event-header";
-import {createEventDetailsTemplate} from "./subcomponents/event-details";
-import {createEventDestinationTemplate} from "./subcomponents/event-destination";
 import {createElement} from "../../../util";
+import EventDestination from "./subcomponents/event-destination";
+import EventDetails from "./subcomponents/event-details";
+import EventEditHeader from "./subcomponents/header/event-header";
 
 const CARD_BLANK = {
   routePointType: `Flight`,
@@ -17,9 +17,9 @@ const CARD_BLANK = {
 };
 
 const createEventCardTemplate = (event) => {
-  const cardHeader = createEventCardHeaderTemplate(event);
-  const cardDetails = createEventDetailsTemplate(event);
-  const cardDestinationInfo = createEventDestinationTemplate(event);
+  const cardHeader = new EventEditHeader(event).getTemplate();
+  const cardDetails = new EventDetails(event.offers).getTemplate();
+  const cardDestinationInfo = new EventDestination(event.destinationInfo).getTemplate();
 
   return (
     `<form class="trip-events__item  event  event--edit" action="#" method="post">
@@ -45,7 +45,7 @@ export default class EventEditCard {
       this._element = createElement(this.getTemplate());
     }
 
-    return this._element
+    return this._element;
   }
 
   removeElement() {

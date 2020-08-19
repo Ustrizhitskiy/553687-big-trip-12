@@ -1,4 +1,6 @@
-export const createSortItemTemplate = (sortName, isChecked) => {
+import {createElement} from "../../util";
+
+const createSortItemTemplate = (sortName, isChecked) => {
   const createSvgTemplate = () => {
     return (
       `<svg class="trip-sort__direction-icon" width="8" height="10" viewBox="0 0 8 10">
@@ -23,3 +25,27 @@ export const createSortItemTemplate = (sortName, isChecked) => {
     </div>`
   );
 };
+
+export default class Sort {
+  constructor(sortName, isChecked) {
+    this._sortName = sortName;
+    this._isChecked = isChecked;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createSortItemTemplate(this._sortName, this._isChecked);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

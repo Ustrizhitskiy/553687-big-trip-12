@@ -1,12 +1,16 @@
 import {ACTIVITY_EVENTS} from "../../../../const";
 import {createElement, getOnlyTimeFromDate, getTimeFromStartToEnd} from "../../../../util";
+import Offer from "./offer";
 
 const getPreposition = (type) => {
   return ACTIVITY_EVENTS.some((elem) => elem === type) ? `in` : `to`;
 };
 
 const createEventItemTemplate = (event) => {
-  const {routePointType, startDate, endDate, cost, city} = event;
+  const {routePointType, startDate, endDate, cost, city, offers} = event;
+
+  const visuallyOffers = offers.slice(0, 3);
+  const offersTemplate = visuallyOffers.map((offer) => new Offer(offer).getTemplate()).join(``);
 
   return (
     `<div class="event">
@@ -27,6 +31,7 @@ const createEventItemTemplate = (event) => {
       </p>
       <h4 class="visually-hidden">Offers:</h4>
       <ul class="event__selected-offers">
+        ${offersTemplate}
       </ul>
       <button class="event__rollup-btn" type="button">
         <span class="visually-hidden">Open event</span>

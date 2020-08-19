@@ -29,13 +29,9 @@ const getSortedAndFilteredEvents = (events, sort, filter) => {
   switch (filter) {
     case `future`:
       filteredEvents = eventsCopy.filter((event) => event.startDate > dateNow);
-      console.log(eventsCopy.length);
-      console.log(filteredEvents.length);
       break;
     case `past`:
       filteredEvents = eventsCopy.filter((event) => event.endDate < dateNow);
-      console.log(eventsCopy.length);
-      console.log(filteredEvents.length);
       break;
     default:
       filteredEvents = eventsCopy;

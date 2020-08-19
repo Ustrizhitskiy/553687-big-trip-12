@@ -1,4 +1,6 @@
-export const createFilterItemTemplate = (filterName, isChecked) => {
+import {createElement} from "../../../util";
+
+const createFilterItemTemplate = (filterName, isChecked) => {
 
   return (
     `<div class="trip-filters__filter">
@@ -13,3 +15,27 @@ export const createFilterItemTemplate = (filterName, isChecked) => {
     </div>`
   );
 };
+
+export default class Filter {
+  constructor(filterName, isChecked) {
+    this._filterName = filterName;
+    this._isChecked = isChecked;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createFilterItemTemplate(this._filterName, this._isChecked);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

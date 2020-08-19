@@ -1,9 +1,9 @@
-import {createEventTypeListTemplate} from "./subcomponents/event-type-list";
 import {ACTIVITY_EVENTS} from "../../../../../const";
-import {getFormattedDateString} from "../../../../../util";
+import {createElement, getFormattedDateString} from "../../../../../util";
+import EventTypeList from "./subcomponents/event-type-list";
 
-export const createEventCardHeaderTemplate = (event) => {
-  const eventTypeList = createEventTypeListTemplate();
+const createEventEditHeaderTemplate = (event) => {
+  const eventTypeList = new EventTypeList().getTemplate();
 
   const getPreposition = (type) => {
     return ACTIVITY_EVENTS.some((elem) => elem === type) ? `in` : `to`;
@@ -17,7 +17,7 @@ export const createEventCardHeaderTemplate = (event) => {
       <div class="event__type-wrapper">
         <label class="event__type  event__type-btn" for="event-type-toggle-1">
           <span class="visually-hidden">Choose event type</span>
-          <img class="event__type-icon" width="17" height="17" src="img/icons/flight.png" alt="Event type icon">
+          <img class="event__type-icon" width="17" height="17" src="img/icons/${routePointType}.png" alt="Event type icon">
         </label>
         <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox">
         <div class="event__type-list">
@@ -69,3 +69,26 @@ export const createEventCardHeaderTemplate = (event) => {
     </header>`
   );
 };
+
+export default class EventEditHeader {
+  constructor(event) {
+    this._event = event;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createEventEditHeaderTemplate(this._event);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

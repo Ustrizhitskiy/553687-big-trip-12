@@ -1,10 +1,10 @@
-import {createSortItemTemplate} from "./sort-item";
 import {createElement} from "../../util";
+import Sort from "./sort-item";
 
 const createSortTemplate = (sortItems) => {
 
   const sortItemsTemplate = sortItems
-    .map((sort, index) => createSortItemTemplate(sort, index === 0))
+    .map((sort, index) => new Sort(sort, index === 0).getTemplate())
     .join(``);
 
   return (
