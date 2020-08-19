@@ -37,19 +37,16 @@ export const getRandomInteger = (a = 0, b = 1) => {
 };
 
 export const getOnlyTimeFromDate = (date) => {
-  const stringDate = date.toLocaleString();
-  const dateTime = stringDate.substring(11, stringDate.length - 6);
-
-  return dateTime.length === 3 ? `0${dateTime}` : dateTime;
+  return date.toLocaleTimeString(`en-GB`, {hour: 'numeric', minute:'2-digit'})
 };
 
 export const getFormattedDateString = (date) => {
-  const day = date.getDate();
-  const month = date.getMonth() + 1;
-  const year = date.getFullYear();
-  const time = getOnlyTimeFromDate(date);
+  const formattedDate = date
+    .toLocaleDateString(`en-GB`, {day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute:'2-digit'})
+    .split(`,`)
+    .join(``);
 
-  return `${day}/${month}/${year} ${time}`;
+  return `${formattedDate}`;
 };
 
 export const getTimeFromStartToEnd = (startDate, endDate) => {
