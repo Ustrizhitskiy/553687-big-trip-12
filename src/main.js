@@ -10,7 +10,7 @@ import EventEditCard from "./view/main/event_card/event-edit-card";
 import TripDayList from "./view/main/event_list/subcomponents/trip-day-list";
 import EventItem from "./view/main/event_list/subcomponents/event-item";
 
-const EVENT_COUNT = 25;
+const EVENT_COUNT = 35;
 
 const events = new Array(EVENT_COUNT).fill().map(generateEvent);
 
