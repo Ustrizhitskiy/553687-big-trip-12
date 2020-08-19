@@ -1,7 +1,8 @@
-import {createItemTypeTemplate} from "./event-type-item";
 import {EVENT_TYPE_GROUPS, TRANSFER_EVENTS, ACTIVITY_EVENTS} from "../../../../../../const";
+import {createElement} from "../../../../../../util";
+import EventType from "./event-type-item";
 
-export const createEventTypeListTemplate = () => {
+const createEventTypeListTemplate = () => {
   const typeGroupWithTypeItems = new Map();
   typeGroupWithTypeItems.set(EVENT_TYPE_GROUPS[0], TRANSFER_EVENTS);
   typeGroupWithTypeItems.set(EVENT_TYPE_GROUPS[1], ACTIVITY_EVENTS);
@@ -10,7 +11,7 @@ export const createEventTypeListTemplate = () => {
 
   const itemListByType = (typeGroup) => {
     return typeGroup.map((typeItem) =>
-      createItemTypeTemplate(typeItem)
+      new EventType(typeItem).getTemplate()
     ).join(``);
   };
 
@@ -21,3 +22,25 @@ export const createEventTypeListTemplate = () => {
     </fieldset>`
   ).join(``);
 };
+
+export default class EventTypeList {
+  constructor() {
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createEventTypeListTemplate();
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

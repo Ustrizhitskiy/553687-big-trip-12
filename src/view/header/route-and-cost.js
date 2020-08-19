@@ -1,4 +1,6 @@
-export const createRouteAndCostTemplate = (events) => {
+import {createElement} from "../../util";
+
+const createRouteAndCostTemplate = (events) => {
   const getTripRoute = (sortedEventsByDate) => {
     if (sortedEventsByDate.length >= 3) {
       const {city: firstCity} = sortedEventsByDate[0];
@@ -59,3 +61,26 @@ export const createRouteAndCostTemplate = (events) => {
     </section>`
   );
 };
+
+export default class RouteAndCostView {
+  constructor(events) {
+    this._events = events;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createRouteAndCostTemplate(this._events);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

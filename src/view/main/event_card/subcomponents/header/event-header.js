@@ -1,14 +1,14 @@
-import {createEventTypeListTemplate} from "./subcomponents/event-type-list";
 import {ACTIVITY_EVENTS} from "../../../../../const";
-import {getFormattedDateString} from "../../../../../util";
+import {createElement, getFormattedDateString} from "../../../../../util";
+import EventTypeList from "./subcomponents/event-type-list";
 
-const eventTypeList = createEventTypeListTemplate();
+const createEventEditHeaderTemplate = (event) => {
+  const eventTypeList = new EventTypeList().getTemplate();
 
-const getPreposition = (type) => {
-  return ACTIVITY_EVENTS.some((elem) => elem === type) ? `in` : `to`;
-};
+  const getPreposition = (type) => {
+    return ACTIVITY_EVENTS.some((elem) => elem === type) ? `in` : `to`;
+  };
 
-export const createEventCardHeaderTemplate = (event) => {
   const {routePointType, city, startDate, endDate, cost} = event;
   const preposition = getPreposition(routePointType);
 
@@ -17,7 +17,7 @@ export const createEventCardHeaderTemplate = (event) => {
       <div class="event__type-wrapper">
         <label class="event__type  event__type-btn" for="event-type-toggle-1">
           <span class="visually-hidden">Choose event type</span>
-          <img class="event__type-icon" width="17" height="17" src="img/icons/flight.png" alt="Event type icon">
+          <img class="event__type-icon" width="17" height="17" src="img/icons/${routePointType}.png" alt="Event type icon">
         </label>
         <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox">
         <div class="event__type-list">
@@ -39,12 +39,12 @@ export const createEventCardHeaderTemplate = (event) => {
         <label class="visually-hidden" for="event-start-time-1">
           From
         </label>
-        <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${getFormattedDateString(startDate)}">
+        <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${startDate ? getFormattedDateString(startDate) : ``}">
         &mdash;
         <label class="visually-hidden" for="event-end-time-1">
           To
         </label>
-        <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${getFormattedDateString(endDate)}">
+        <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${endDate ? getFormattedDateString(endDate) : ``}">
       </div>
       <div class="event__field-group  event__field-group--price">
         <label class="event__label" for="event-price-1">
@@ -69,3 +69,26 @@ export const createEventCardHeaderTemplate = (event) => {
     </header>`
   );
 };
+
+export default class EventEditHeader {
+  constructor(event) {
+    this._event = event;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createEventEditHeaderTemplate(this._event);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
