@@ -16,14 +16,14 @@ const EVENT_COUNT = 35;
 const events = new Array(EVENT_COUNT).fill().map(generateEvent);
 
 const tripMainHeaderElement = document.querySelector(`.trip-main`);
-render(tripMainHeaderElement, new RouteAndCostView(events).getElement(), RenderPosition.AFTERBEGIN);
+render(tripMainHeaderElement, new RouteAndCostView(events), RenderPosition.AFTERBEGIN);
 
 const tabsAndFiltersElement = tripMainHeaderElement.querySelectorAll(`.trip-main__trip-controls h2`);
 const tabsTitleElement = tabsAndFiltersElement[0];
-render(tabsTitleElement, new MenuTabs().getElement(), RenderPosition.AFTEREND);
+render(tabsTitleElement, new MenuTabs(), RenderPosition.AFTEREND);
 
 const filterTitleElement = tabsAndFiltersElement[1];
-render(filterTitleElement, new FilterList().getElement(), RenderPosition.AFTEREND);
+render(filterTitleElement, new FilterList(), RenderPosition.AFTEREND);
 
 const sortAndContentElement = document.querySelector(`.page-body__page-main .trip-events`);
 
@@ -49,15 +49,15 @@ const renderEvent = (eventListPerDay, event) => {
     document.removeEventListener(`keydown`, onEscKeyDown);
   });
 
-  render(eventListPerDay, eventViewComponent.getElement(), RenderPosition.BEFOREEND);
+  render(eventListPerDay, eventViewComponent, RenderPosition.BEFOREEND);
 };
 
 const renderTripListWithDays = (eventList) => {
   for (let dayDate of eventList.getTripDayLists().keys()) {
-    const dayOfList = new TripDayList(dayDate).getElement();
+    const dayOfList = new TripDayList(dayDate);
     render(eventList, dayOfList, RenderPosition.BEFOREEND);
 
-    const eventListPerDay = dayOfList.querySelector(`.trip-events__list`);
+    const eventListPerDay = dayOfList.getElement().querySelector(`.trip-events__list`);
     for (let event of eventList.getTripDayLists().get(dayDate)) {
       renderEvent(eventListPerDay, event);
     }
@@ -75,11 +75,11 @@ const renderTripListWithoutDays = (eventList) => {
 
 const renderMainContainer = () => {
   const tripEventsTitleElement = sortAndContentElement.querySelector(`h2`);
-  render(tripEventsTitleElement, new SortList().getElement(), RenderPosition.AFTEREND);
+  render(tripEventsTitleElement, new SortList(), RenderPosition.AFTEREND);
 
   const sort = SortItems.EVENT;
   const eventList = new EventList(events, sort, FilterItems.FUTURE);
-  render(sortAndContentElement, eventList.getElement(), RenderPosition.BEFOREEND);
+  render(sortAndContentElement, eventList, RenderPosition.BEFOREEND);
 
   if (sort === SortItems.EVENT) {
     renderTripListWithDays(eventList);
@@ -91,5 +91,5 @@ const renderMainContainer = () => {
 if (events.length > 0) {
   renderMainContainer();
 } else {
-  render(sortAndContentElement, new NoEvent().getElement(), RenderPosition.BEFOREEND);
+  render(sortAndContentElement, new NoEvent(), RenderPosition.BEFOREEND);
 }
