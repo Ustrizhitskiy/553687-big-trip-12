@@ -34,9 +34,20 @@ export default class EventEditCard extends AbstractElement {
   constructor(tripEvent) {
     super();
     this._tripEvent = tripEvent || CARD_BLANK;
+    this._formSubmitHandler = this._formSubmitHandler.bind(this);
   }
 
   getTemplate() {
     return createEventCardTemplate(this._tripEvent);
+  }
+
+  _formSubmitHandler(evt) {
+    evt.preventDefault();
+    this._callback.formSubmit();
+  }
+
+  setFormSubmitHandler(callback) {
+    this._callback.formSubmit = callback;
+    this.getElement().addEventListener(`submit`, this._formSubmitHandler);
   }
 }

@@ -39,13 +39,12 @@ const renderEvent = (eventListPerDay, event) => {
     }
   };
 
-  eventViewComponent.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, () => {
+  eventViewComponent.setEditClickHandler(() => {
     replace(eventFormComponent, eventViewComponent);
     document.addEventListener(`keydown`, onEscKeyDown);
   });
 
-  eventFormComponent.getElement().addEventListener(`submit`, (evt) => {
-    evt.preventDefault();
+  eventFormComponent.setFormSubmitHandler(() => {
     replace(eventViewComponent, eventFormComponent);
     document.removeEventListener(`keydown`, onEscKeyDown);
   });
@@ -56,7 +55,7 @@ const renderEvent = (eventListPerDay, event) => {
 const renderTripListWithDays = (eventList) => {
   for (let dayDate of eventList.getTripDayLists().keys()) {
     const dayOfList = new TripDayList(dayDate).getElement();
-    render(eventList.getElement(), dayOfList, RenderPosition.BEFOREEND);
+    render(eventList, dayOfList, RenderPosition.BEFOREEND);
 
     const eventListPerDay = dayOfList.querySelector(`.trip-events__list`);
     for (let event of eventList.getTripDayLists().get(dayDate)) {
@@ -67,7 +66,7 @@ const renderTripListWithDays = (eventList) => {
 
 const renderTripListWithoutDays = (eventList) => {
   const listWithoutDays = new TripDayList().getElementWithoutDay();
-  render(eventList.getElement(), listWithoutDays, RenderPosition.BEFOREEND);
+  render(eventList, listWithoutDays, RenderPosition.BEFOREEND);
   const tripEventList = listWithoutDays.querySelector(`.trip-events__list`);
   for (let event of eventList.getEvents()) {
     renderEvent(tripEventList, event);
