@@ -1,6 +1,6 @@
 import {FILTER_ITEMS, SORT_ITEMS} from "./const";
 import {generateEvent} from "./mock/eventMock";
-import {render, RenderPosition} from "./util/render";
+import {render, RenderPosition, replace} from "./util/render";
 import RouteAndCostView from "./view/header/route-and-cost";
 import MenuTabs from "./view/header/menu-tabs";
 import FilterList from "./view/header/filter/filter-list";
@@ -31,30 +31,22 @@ const renderEvent = (eventListPerDay, event) => {
   const eventViewComponent = new EventItem(event);
   const eventFormComponent = new EventEditCard(event);
 
-  const replaceEventViewToEventForm = () => {
-    eventListPerDay.replaceChild(eventFormComponent.getElement(), eventViewComponent.getElement());
-  };
-
-  const replaceEventFormToEventView = () => {
-    eventListPerDay.replaceChild(eventViewComponent.getElement(), eventFormComponent.getElement());
-  };
-
   const onEscKeyDown = (evt) => {
     if (evt.key === `Escape` || evt.key === `Esc`) {
       evt.preventDefault();
-      replaceEventFormToEventView();
+      replace(eventViewComponent, eventFormComponent);
       document.removeEventListener(`keydown`, onEscKeyDown);
     }
   };
 
   eventViewComponent.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, () => {
-    replaceEventViewToEventForm();
+    replace(eventFormComponent, eventViewComponent);
     document.addEventListener(`keydown`, onEscKeyDown);
   });
 
   eventFormComponent.getElement().addEventListener(`submit`, (evt) => {
     evt.preventDefault();
-    replaceEventFormToEventView();
+    replace(eventViewComponent, eventFormComponent);
     document.removeEventListener(`keydown`, onEscKeyDown);
   });
 

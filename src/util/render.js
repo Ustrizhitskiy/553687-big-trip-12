@@ -1,3 +1,5 @@
+import AbstractElement from "../view/abstract-element";
+
 export const RenderPosition = {
   AFTERBEGIN: `afterbegin`,
   AFTEREND: `afterend`,
@@ -5,20 +7,40 @@ export const RenderPosition = {
 };
 
 export const render = (container, element, position) => {
-  switch (position) {
-    case RenderPosition.AFTERBEGIN:
-      container.prepend(element);
-      break;
-    case RenderPosition.AFTEREND:
-      container.after(element);
-      break;
-    case RenderPosition.BEFOREEND:
-      container.append(element);
-      break;
+  if (container instanceof AbstractElement) {
+    container = container.getElement();
+  }
+
+  if (element instanceof AbstractElement) {
+    element = element.getElement();
+  }
+
+  container.insertAdjacentElement(position, element);
+};
+
+export const replace = (newChild, oldChild) => {
+  if (newChild instanceof AbstractElement) {
+    newChild = newChild.getElement();
+  }
+
+  if (oldChild instanceof AbstractElement) {
+    oldChild = oldChild.getElement();
+  }
+
+  const parentElement = oldChild.parentElement;
+
+  try {
+    parentElement.replaceChild(newChild, oldChild);
+  } catch (e) {
+    console.log(`Can't replace unexisting elements`);
   }
 };
 
 export const renderTemplate = (container, template, position) => {
+  if (container instanceof AbstractElement) {
+    container = container.getElement();
+  }
+
   container.insertAdjacentHTML(position, template);
 };
 
