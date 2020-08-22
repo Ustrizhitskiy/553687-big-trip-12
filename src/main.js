@@ -1,6 +1,6 @@
 import {FILTER_ITEMS, SORT_ITEMS} from "./const";
 import {generateEvent} from "./mock/eventMock";
-import {createElement, render, RenderPosition} from "./util";
+import {render, RenderPosition} from "./util";
 import RouteAndCostView from "./view/header/route-and-cost";
 import MenuTabs from "./view/header/menu-tabs";
 import FilterList from "./view/header/filter/filter-list";
@@ -9,6 +9,7 @@ import EventList from "./view/main/event_list/event-list";
 import EventEditCard from "./view/main/event_card/event-edit-card";
 import TripDayList from "./view/main/event_list/subcomponents/trip-day-list";
 import EventItem from "./view/main/event_list/subcomponents/event-item";
+import NoEvent from "./view/no-events";
 
 const EVENT_COUNT = 35;
 
@@ -82,6 +83,5 @@ const renderMainContainer = () => {
 if (events.length > 0) {
   renderMainContainer();
 } else {
-  const noPointsElement = createElement(`<p class="trip-events__msg">Click New Event to create your first point</p>`);
-  render(sortAndContentElement, noPointsElement, RenderPosition.BEFOREEND);
+  render(sortAndContentElement, new NoEvent().getElement(), RenderPosition.BEFOREEND);
 }

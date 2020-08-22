@@ -1,4 +1,4 @@
-import {createElement} from "../../../util";
+import AbstractElement from "../../abstract-element";
 
 const createEventListTemplate = () => {
   return (
@@ -59,29 +59,17 @@ const getListOfDayWithEvents = (events) => {
   return allDaysWithEventsList;
 };
 
-export default class EventList {
+export default class EventList extends AbstractElement {
   constructor(events, sortType, filter) {
+    super();
     this._events = getSortedAndFilteredEvents(events, sortType, filter);
-    this._element = null;
   }
 
   getTemplate() {
     return createEventListTemplate();
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
   getTripDayLists() {
     return getListOfDayWithEvents(this._events);
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

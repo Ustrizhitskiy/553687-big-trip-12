@@ -1,6 +1,7 @@
 import {ACTIVITY_EVENTS} from "../../../../const";
 import {createElement, getOnlyTimeFromDate, getTimeFromStartToEnd} from "../../../../util";
 import Offer from "./offer";
+import AbstractElement from "../../../abstract-element";
 
 const getPreposition = (type) => {
   return ACTIVITY_EVENTS.some((elem) => elem === type) ? `in` : `to`;
@@ -40,25 +41,13 @@ const createEventItemTemplate = (event) => {
   );
 };
 
-export default class EventItem {
+export default class EventItem extends AbstractElement {
   constructor(event) {
+    super();
     this._event = event;
-    this._element = null;
   }
 
   getTemplate() {
     return createEventItemTemplate(this._event);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

@@ -1,4 +1,4 @@
-import {createElement} from "../../../../util";
+import AbstractElement from "../../../abstract-element";
 
 const createTripDayListTemplate = (dayDate) => {
   return (
@@ -16,25 +16,13 @@ const createTripDayListTemplate = (dayDate) => {
 };
 
 
-export default class TripDayList {
+export default class TripDayList extends AbstractElement {
   constructor(dayDate) {
+    super();
     this.dayDate = dayDate;
-    this._element = null;
   }
 
   getTemplate() {
     return createTripDayListTemplate(this.dayDate);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

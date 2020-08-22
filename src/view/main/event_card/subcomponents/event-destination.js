@@ -1,4 +1,4 @@
-import {createElement} from "../../../../util";
+import AbstractElement from "../../../abstract-element";
 
 const createEventDestinationTemplate = (destinationInfo) => {
   const {description, photosSrc} = destinationInfo;
@@ -21,25 +21,13 @@ const createEventDestinationTemplate = (destinationInfo) => {
   );
 };
 
-export default class EventDestination {
+export default class EventDestination extends AbstractElement {
   constructor(destinationInfo) {
+    super();
     this._destinationInfo = destinationInfo;
-    this._element = null;
   }
 
   getTemplate() {
     return createEventDestinationTemplate(this._destinationInfo);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

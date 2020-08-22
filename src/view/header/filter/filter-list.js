@@ -1,5 +1,5 @@
-import {createElement} from "../../../util";
 import Filter from "./filter-item";
+import AbstractElement from "../../abstract-element";
 
 const createFilterListTemplate = (filterItems) => {
   const filterItemsTemplate = filterItems
@@ -14,25 +14,13 @@ const createFilterListTemplate = (filterItems) => {
   );
 };
 
-export default class FilterList {
+export default class FilterList extends AbstractElement{
   constructor(filters) {
+    super();
     this._filters = filters;
-    this._element = null;
   }
 
   getTemplate() {
     return createFilterListTemplate(this._filters);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

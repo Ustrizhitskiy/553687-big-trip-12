@@ -1,4 +1,4 @@
-import {createElement} from "../../../../util";
+import AbstractElement from "../../../abstract-element";
 
 const createEventDetailsTemplate = (offers) => {
   const offersList = offers.map((offer, index) =>
@@ -29,25 +29,13 @@ const createEventDetailsTemplate = (offers) => {
   );
 };
 
-export default class EventDetails {
+export default class EventDetails extends AbstractElement {
   constructor(offers) {
+    super();
     this._offers = offers;
-    this._element = null;
   }
 
   getTemplate() {
     return createEventDetailsTemplate(this._offers);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

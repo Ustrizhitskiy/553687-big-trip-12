@@ -1,4 +1,4 @@
-import {createElement} from "../../../../../../util";
+import AbstractElement from "../../../../../abstract-element";
 
 const createItemTypeTemplate = (eventType) => {
   const type = eventType.toLowerCase();
@@ -18,23 +18,13 @@ const createItemTypeTemplate = (eventType) => {
   );
 };
 
-export default class EventType {
+export default class EventType extends AbstractElement {
   constructor(eventType) {
+    super();
     this._eventType = eventType;
-    this._element = null;
   }
 
   getTemplate() {
     return createItemTypeTemplate(this._eventType);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

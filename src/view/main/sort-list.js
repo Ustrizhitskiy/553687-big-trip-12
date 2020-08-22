@@ -1,5 +1,5 @@
-import {createElement} from "../../util";
 import Sort from "./sort-item";
+import AbstractElement from "../abstract-element";
 
 const createSortTemplate = (sortItems) => {
 
@@ -16,25 +16,13 @@ const createSortTemplate = (sortItems) => {
   );
 };
 
-export default class SortList {
+export default class SortList extends AbstractElement {
   constructor(sortList) {
+    super();
     this._sortList = sortList;
-    this._element = null;
   }
 
   getTemplate() {
     return createSortTemplate(this._sortList);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
