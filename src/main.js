@@ -1,6 +1,6 @@
 import {FILTER_ITEMS, SORT_ITEMS} from "./const";
 import {generateEvent} from "./mock/eventMock";
-import {render, RenderPosition} from "./util";
+import {render, RenderPosition} from "./util/render";
 import RouteAndCostView from "./view/header/route-and-cost";
 import MenuTabs from "./view/header/menu-tabs";
 import FilterList from "./view/header/filter/filter-list";

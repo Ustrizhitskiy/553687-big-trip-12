@@ -1,4 +1,4 @@
-import {getRandomInteger} from "../util";
+import {getRandomInteger} from "../util/common";
 import {TRANSFER_EVENTS, ACTIVITY_EVENTS} from "../const";
 import {generateOffers} from "./offerMock";
 

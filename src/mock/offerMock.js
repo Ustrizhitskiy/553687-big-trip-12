@@ -1,4 +1,4 @@
-import {getRandomInteger} from "../util";
+import {getRandomInteger} from "../util/common";
 
 const allOffersAndTypes = new Map();
 allOffersAndTypes.set(`flightOffers`, [`Add luggage`, `Switch to comfort class`, `Add meal`, `Choose seats`]);

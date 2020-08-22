@@ -1,5 +1,5 @@
 import {ACTIVITY_EVENTS} from "../../../../const";
-import {createElement, getOnlyTimeFromDate, getTimeFromStartToEnd} from "../../../../util";
+import {getOnlyTimeFromDate, getTimeFromStartToEnd} from "../../../../util/date_and_time";
 import Offer from "./offer";
 import AbstractElement from "../../../abstract-element";
 

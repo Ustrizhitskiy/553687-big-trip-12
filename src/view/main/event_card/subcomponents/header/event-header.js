@@ -1,5 +1,5 @@
 import {ACTIVITY_EVENTS} from "../../../../../const";
-import {getFormattedDateString} from "../../../../../util";
+import {getFormattedDateString} from "../../../../../util/date_and_time";
 import EventTypeList from "./subcomponents/event-type-list";
 import AbstractElement from "../../../../abstract-element";
 
