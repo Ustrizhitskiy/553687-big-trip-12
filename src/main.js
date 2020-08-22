@@ -1,4 +1,4 @@
-import {FILTER_ITEMS, SORT_ITEMS} from "./const";
+import {FilterItems, SortItems} from "./const";
 import {generateEvent} from "./mock/eventMock";
 import {render, RenderPosition, replace} from "./util/render";
 import RouteAndCostView from "./view/header/route-and-cost";
@@ -23,7 +23,7 @@ const tabsTitleElement = tabsAndFiltersElement[0];
 render(tabsTitleElement, new MenuTabs().getElement(), RenderPosition.AFTEREND);
 
 const filterTitleElement = tabsAndFiltersElement[1];
-render(filterTitleElement, new FilterList(FILTER_ITEMS).getElement(), RenderPosition.AFTEREND);
+render(filterTitleElement, new FilterList().getElement(), RenderPosition.AFTEREND);
 
 const sortAndContentElement = document.querySelector(`.page-body__page-main .trip-events`);
 
@@ -53,22 +53,39 @@ const renderEvent = (eventListPerDay, event) => {
   render(eventListPerDay, eventViewComponent.getElement(), RenderPosition.BEFOREEND);
 };
 
-const renderMainContainer = () => {
-  const tripEventsTitleElement = sortAndContentElement.querySelector(`h2`);
-  render(tripEventsTitleElement, new SortList(SORT_ITEMS).getElement(), RenderPosition.AFTEREND);
-
-  const sort = SORT_ITEMS[0];
-  const eventList = new EventList(events, sort, FILTER_ITEMS[0]);
-  render(sortAndContentElement, eventList.getElement(), RenderPosition.BEFOREEND);
-
+const renderTripListWithDays = (eventList) => {
   for (let dayDate of eventList.getTripDayLists().keys()) {
-    const dayOfList = new TripDayList(dayDate);
-    render(eventList.getElement(), dayOfList.getElement(), RenderPosition.BEFOREEND);
+    const dayOfList = new TripDayList(dayDate).getElement();
+    render(eventList.getElement(), dayOfList, RenderPosition.BEFOREEND);
 
-    const eventListPerDay = dayOfList.getElement().querySelector(`.trip-events__list`);
+    const eventListPerDay = dayOfList.querySelector(`.trip-events__list`);
     for (let event of eventList.getTripDayLists().get(dayDate)) {
       renderEvent(eventListPerDay, event);
     }
+  }
+};
+
+const renderTripListWithoutDays = (eventList) => {
+  const listWithoutDays = new TripDayList().getElementWithoutDay();
+  render(eventList.getElement(), listWithoutDays, RenderPosition.BEFOREEND);
+  const tripEventList = listWithoutDays.querySelector(`.trip-events__list`);
+  for (let event of eventList.getEvents()) {
+    renderEvent(tripEventList, event);
+  }
+};
+
+const renderMainContainer = () => {
+  const tripEventsTitleElement = sortAndContentElement.querySelector(`h2`);
+  render(tripEventsTitleElement, new SortList().getElement(), RenderPosition.AFTEREND);
+
+  const sort = SortItems.EVENT;
+  const eventList = new EventList(events, sort, FilterItems.FUTURE);
+  render(sortAndContentElement, eventList.getElement(), RenderPosition.BEFOREEND);
+
+  if (sort === SortItems.EVENT) {
+    renderTripListWithDays(eventList);
+  } else {
+    renderTripListWithoutDays(eventList);
   }
 };
 

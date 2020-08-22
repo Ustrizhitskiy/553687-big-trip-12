@@ -32,7 +32,7 @@ export const replace = (newChild, oldChild) => {
   try {
     parentElement.replaceChild(newChild, oldChild);
   } catch (e) {
-    console.log(`Can't replace unexisting elements`);
+    throw new Error(`Can't replace unexisting elements`);
   }
 };
 

@@ -70,6 +70,14 @@ export default class EventList extends AbstractElement {
   }
 
   getTripDayLists() {
-    return getListOfDayWithEvents(this._events);
+    if (this._events.length !== 0) {
+      return getListOfDayWithEvents(this._events);
+    } else {
+      return new Map();
+    }
+  }
+
+  getEvents() {
+    return this._events;
   }
 }

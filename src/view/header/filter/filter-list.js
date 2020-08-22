@@ -1,5 +1,6 @@
 import Filter from "./filter-item";
 import AbstractElement from "../../abstract-element";
+import {FilterItems} from "../../../const";
 
 const createFilterListTemplate = (filterItems) => {
   const filterItemsTemplate = filterItems
@@ -15,9 +16,9 @@ const createFilterListTemplate = (filterItems) => {
 };
 
 export default class FilterList extends AbstractElement {
-  constructor(filters) {
+  constructor() {
     super();
-    this._filters = filters;
+    this._filters = Object.values(FilterItems);
   }
 
   getTemplate() {

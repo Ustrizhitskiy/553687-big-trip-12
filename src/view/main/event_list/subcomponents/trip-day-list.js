@@ -1,4 +1,5 @@
 import AbstractElement from "../../../abstract-element";
+import {createElement} from "../../../../util/render";
 
 const createTripDayListTemplate = (dayDate) => {
   return (
@@ -15,6 +16,17 @@ const createTripDayListTemplate = (dayDate) => {
   );
 };
 
+const createNoParamsTemplate = () => {
+  return (
+    `<li class="trip-days__item  day">
+        <div class="day__info">
+        </div>
+        <ul class="trip-events__list">
+        </ul>
+      </li>`
+  );
+};
+
 
 export default class TripDayList extends AbstractElement {
   constructor(dayDate) {
@@ -24,5 +36,9 @@ export default class TripDayList extends AbstractElement {
 
   getTemplate() {
     return createTripDayListTemplate(this.dayDate);
+  }
+
+  getElementWithoutDay() {
+    return createElement(createNoParamsTemplate());
   }
 }
