@@ -16,7 +16,7 @@ const createSortItemTemplate = (sortName, isChecked) => {
         class="trip-sort__input  visually-hidden"
         type="radio"
         name="trip-sort"
-        value="sort-${sortName}"
+        value="${sortName}"
         ${isChecked ? `checked` : ``}>
       <label class="trip-sort__btn" for="sort-${sortName}">
         ${sortName}

@@ -63,21 +63,22 @@ export default class Trip {
     this._filterListComponent.setFilterTypeChangeHandler((newFilter) => this._renderChangedEventList(newFilter));
   }
 
-  _renderChangedEventList(newFilter) {
-    this._currentFilter = newFilter;
+  _renderChangedEventList(type) {
+    const isFilter = Object.values(FilterItems).some((value) => value === type);
+    if (isFilter) {
+      this._currentFilter = type;
+    } else {
+      this._currentSort = type;
+    }
     this._eventList.removeElement();
-    console.log(this._eventList);
     this._eventList = new EventList(this._events, this._currentSort, this._currentFilter);
-    this._renderEventsContainer()
+    this._renderEventsContainer();
   }
-
-
-
-
 
   _renderEventsContainer() {
     const tripEventsTitleElement = this._sortAndContentElement.querySelector(`h2`);
     render(tripEventsTitleElement, this._sortListComponent, RenderPosition.AFTEREND);
+    this._sortListComponent.setSortTypeChangeHandler((newSort) => this._renderChangedEventList(newSort));
 
     this._eventList = new EventList(this._events, this._currentSort, this._currentFilter);
     render(this._sortAndContentElement, this._eventList, RenderPosition.BEFOREEND);

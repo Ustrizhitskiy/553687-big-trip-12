@@ -21,9 +21,25 @@ export default class SortList extends AbstractElement {
   constructor() {
     super();
     this._sortList = Object.values(SortItems);
+
+    this._sortTypeChangeHandler = this._sortTypeChangeHandler.bind(this);
   }
 
   getTemplate() {
     return createSortTemplate(this._sortList);
+  }
+
+  _sortTypeChangeHandler(evt) {
+    if (evt.target.tagName !== `INPUT`) {
+      return;
+    }
+
+    evt.preventDefault();
+    this._callback.sortTypeChange(evt.target.value);
+  }
+
+  setSortTypeChangeHandler(callback) {
+    this._callback.sortTypeChange = callback;
+    this.getElement().addEventListener(`click`, this._sortTypeChangeHandler);
   }
 }
