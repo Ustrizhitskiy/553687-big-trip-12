@@ -8,12 +8,12 @@ export const getOnlyTimeFromDate = (date) => {
 
 export const getFormattedDateString = (date) => {
   try {
-  const formattedDate = date
-    .toLocaleDateString(`en-GB`, {day: `2-digit`, month: `2-digit`, year: `2-digit`, hour: `2-digit`, minute: `2-digit`})
-    .split(`,`)
-    .join(``);
+    const formattedDate = date
+      .toLocaleDateString(`en-GB`, {day: `2-digit`, month: `2-digit`, year: `2-digit`, hour: `2-digit`, minute: `2-digit`})
+      .split(`,`)
+      .join(``);
 
-  return `${formattedDate}`;
+    return `${formattedDate}`;
   } catch (e) {
     throw new Error(`Input parameters are not Date object.`);
   }
