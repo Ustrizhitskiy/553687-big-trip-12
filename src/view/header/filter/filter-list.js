@@ -19,9 +19,25 @@ export default class FilterList extends AbstractElement {
   constructor() {
     super();
     this._filters = Object.values(FilterItems);
+
+    this._filterTypeChangeHandler = this._filterTypeChangeHandler.bind(this);
   }
 
   getTemplate() {
     return createFilterListTemplate(this._filters);
+  }
+
+  _filterTypeChangeHandler(evt) {
+    if (evt.target.tagName !== `INPUT`) {
+      return;
+    }
+
+    evt.preventDefault();
+    this._callback.filterTypeChange(evt.target.value);
+  }
+
+  setFilterTypeChangeHandler(callback) {
+    this._callback.filterTypeChange = callback;
+    this.getElement().addEventListener(`click`, this._filterTypeChangeHandler);
   }
 }

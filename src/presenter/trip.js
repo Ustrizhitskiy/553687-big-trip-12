@@ -13,7 +13,7 @@ import EventEditCard from "../view/main/event_card/event-edit-card";
 export default class Trip {
   constructor() {
     this._currentFilter = FilterItems.EVERYTHING;
-    this.currentSort = SortItems.EVENT;
+    this._currentSort = SortItems.EVENT;
 
     this._menuTabsComponent = new MenuTabs();
     this._filterListComponent = new FilterList();
@@ -26,13 +26,17 @@ export default class Trip {
 
     this._renderHeader();
 
-    const sortAndContentElement = document.querySelector(`.page-body__page-main .trip-events`);
+    this._sortAndContentElement = document.querySelector(`.page-body__page-main .trip-events`);
 
     if (this._events.length > 0) {
-      this._renderEventsContainer(sortAndContentElement);
+      this._renderEventsContainer(this._sortAndContentElement);
     } else {
-      render(sortAndContentElement, this._noEventComponent, RenderPosition.BEFOREEND);
+      this._renderNoEventContainer();
     }
+  }
+
+  _renderNoEventContainer() {
+    render(this._sortAndContentElement, this._noEventComponent, RenderPosition.BEFOREEND);
   }
 
   _renderHeader() {
@@ -56,28 +60,32 @@ export default class Trip {
   _renderFilterListComponent(tabsAndFiltersElement) {
     const filterTitleElement = tabsAndFiltersElement[1];
     render(filterTitleElement, this._filterListComponent, RenderPosition.AFTEREND);
+    this._filterListComponent.setFilterTypeChangeHandler((newFilter) => this._renderChangedEventList(newFilter));
+  }
+
+  _renderChangedEventList(newFilter) {
+    this._currentFilter = newFilter;
+    this._eventList.removeElement();
+    console.log(this._eventList);
+    this._eventList = new EventList(this._events, this._currentSort, this._currentFilter);
+    this._renderEventsContainer()
   }
 
 
 
 
 
-
-
-
-  _renderEventsContainer(sortAndContentElement) {
-    const tripEventsTitleElement = sortAndContentElement.querySelector(`h2`);
+  _renderEventsContainer() {
+    const tripEventsTitleElement = this._sortAndContentElement.querySelector(`h2`);
     render(tripEventsTitleElement, this._sortListComponent, RenderPosition.AFTEREND);
 
-    const sort = SortItems.EVENT;
-    const filter = FilterItems.EVERYTHING;
-    const eventList = new EventList(this._events, sort, filter);
-    render(sortAndContentElement, eventList, RenderPosition.BEFOREEND);
+    this._eventList = new EventList(this._events, this._currentSort, this._currentFilter);
+    render(this._sortAndContentElement, this._eventList, RenderPosition.BEFOREEND);
 
-    if (sort === SortItems.EVENT) {
-      this._renderTripListWithDays(eventList);
+    if (this._currentSort === SortItems.EVENT) {
+      this._renderTripListWithDays(this._eventList);
     } else {
-      this._renderTripListWithoutDays(eventList);
+      this._renderTripListWithoutDays(this._eventList);
     }
   }
 
