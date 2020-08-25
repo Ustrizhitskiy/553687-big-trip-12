@@ -1,5 +1,6 @@
-import {createElement} from "../../util";
 import Sort from "./sort-item";
+import AbstractElement from "../abstract-element";
+import {SortItems} from "../../const";
 
 const createSortTemplate = (sortItems) => {
 
@@ -16,25 +17,29 @@ const createSortTemplate = (sortItems) => {
   );
 };
 
-export default class SortList {
-  constructor(sortList) {
-    this._sortList = sortList;
-    this._element = null;
+export default class SortList extends AbstractElement {
+  constructor() {
+    super();
+    this._sortList = Object.values(SortItems);
+
+    this._sortTypeChangeHandler = this._sortTypeChangeHandler.bind(this);
   }
 
   getTemplate() {
     return createSortTemplate(this._sortList);
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
+  _sortTypeChangeHandler(evt) {
+    if (evt.target.tagName !== `INPUT`) {
+      return;
     }
 
-    return this._element;
+    evt.preventDefault();
+    this._callback.sortTypeChange(evt.target.value);
   }
 
-  removeElement() {
-    this._element = null;
+  setSortTypeChangeHandler(callback) {
+    this._callback.sortTypeChange = callback;
+    this.getElement().addEventListener(`click`, this._sortTypeChangeHandler);
   }
 }

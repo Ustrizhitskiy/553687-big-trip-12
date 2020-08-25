@@ -1,7 +1,7 @@
-import {createElement} from "../../../util";
 import EventDestination from "./subcomponents/event-destination";
 import EventDetails from "./subcomponents/event-details";
 import EventEditHeader from "./subcomponents/header/event-header";
+import AbstractElement from "../../abstract-element";
 
 const CARD_BLANK = {
   routePointType: `Flight`,
@@ -30,25 +30,24 @@ const createEventCardTemplate = (event) => {
   );
 };
 
-export default class EventEditCard {
+export default class EventEditCard extends AbstractElement {
   constructor(tripEvent) {
+    super();
     this._tripEvent = tripEvent || CARD_BLANK;
-    this._element = null;
+    this._formSubmitHandler = this._formSubmitHandler.bind(this);
   }
 
   getTemplate() {
     return createEventCardTemplate(this._tripEvent);
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
+  _formSubmitHandler(evt) {
+    evt.preventDefault();
+    this._callback.formSubmit();
   }
 
-  removeElement() {
-    this._element = null;
+  setFormSubmitHandler(callback) {
+    this._callback.formSubmit = callback;
+    this.getElement().addEventListener(`submit`, this._formSubmitHandler);
   }
 }

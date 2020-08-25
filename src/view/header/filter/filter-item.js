@@ -1,4 +1,4 @@
-import {createElement} from "../../../util";
+import AbstractElement from "../../abstract-element";
 
 const createFilterItemTemplate = (filterName, isChecked) => {
 
@@ -16,26 +16,14 @@ const createFilterItemTemplate = (filterName, isChecked) => {
   );
 };
 
-export default class Filter {
+export default class Filter extends AbstractElement {
   constructor(filterName, isChecked) {
+    super();
     this._filterName = filterName;
     this._isChecked = isChecked;
-    this._element = null;
   }
 
   getTemplate() {
     return createFilterItemTemplate(this._filterName, this._isChecked);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

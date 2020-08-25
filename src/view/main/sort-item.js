@@ -1,4 +1,4 @@
-import {createElement} from "../../util";
+import AbstractElement from "../abstract-element";
 
 const createSortItemTemplate = (sortName, isChecked) => {
   const createSvgTemplate = () => {
@@ -16,7 +16,7 @@ const createSortItemTemplate = (sortName, isChecked) => {
         class="trip-sort__input  visually-hidden"
         type="radio"
         name="trip-sort"
-        value="sort-${sortName}"
+        value="${sortName}"
         ${isChecked ? `checked` : ``}>
       <label class="trip-sort__btn" for="sort-${sortName}">
         ${sortName}
@@ -26,26 +26,14 @@ const createSortItemTemplate = (sortName, isChecked) => {
   );
 };
 
-export default class Sort {
+export default class Sort extends AbstractElement {
   constructor(sortName, isChecked) {
+    super();
     this._sortName = sortName;
     this._isChecked = isChecked;
-    this._element = null;
   }
 
   getTemplate() {
     return createSortItemTemplate(this._sortName, this._isChecked);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

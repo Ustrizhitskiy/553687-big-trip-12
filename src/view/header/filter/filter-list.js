@@ -1,5 +1,6 @@
-import {createElement} from "../../../util";
 import Filter from "./filter-item";
+import AbstractElement from "../../abstract-element";
+import {FilterItems} from "../../../const";
 
 const createFilterListTemplate = (filterItems) => {
   const filterItemsTemplate = filterItems
@@ -14,25 +15,29 @@ const createFilterListTemplate = (filterItems) => {
   );
 };
 
-export default class FilterList {
-  constructor(filters) {
-    this._filters = filters;
-    this._element = null;
+export default class FilterList extends AbstractElement {
+  constructor() {
+    super();
+    this._filters = Object.values(FilterItems);
+
+    this._filterTypeChangeHandler = this._filterTypeChangeHandler.bind(this);
   }
 
   getTemplate() {
     return createFilterListTemplate(this._filters);
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
+  _filterTypeChangeHandler(evt) {
+    if (evt.target.tagName !== `INPUT`) {
+      return;
     }
 
-    return this._element;
+    evt.preventDefault();
+    this._callback.filterTypeChange(evt.target.value);
   }
 
-  removeElement() {
-    this._element = null;
+  setFilterTypeChangeHandler(callback) {
+    this._callback.filterTypeChange = callback;
+    this.getElement().addEventListener(`click`, this._filterTypeChangeHandler);
   }
 }

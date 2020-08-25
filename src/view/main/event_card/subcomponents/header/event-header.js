@@ -1,6 +1,7 @@
 import {ACTIVITY_EVENTS} from "../../../../../const";
-import {createElement, getFormattedDateString} from "../../../../../util";
+import {getFormattedDateString} from "../../../../../util/date_and_time";
 import EventTypeList from "./subcomponents/event-type-list";
+import AbstractElement from "../../../../abstract-element";
 
 const createEventEditHeaderTemplate = (event) => {
   const eventTypeList = new EventTypeList().getTemplate();
@@ -70,25 +71,13 @@ const createEventEditHeaderTemplate = (event) => {
   );
 };
 
-export default class EventEditHeader {
+export default class EventEditHeader extends AbstractElement {
   constructor(event) {
+    super();
     this._event = event;
-    this._element = null;
   }
 
   getTemplate() {
     return createEventEditHeaderTemplate(this._event);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

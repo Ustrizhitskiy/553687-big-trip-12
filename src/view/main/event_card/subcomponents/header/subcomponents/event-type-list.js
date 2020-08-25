@@ -1,6 +1,6 @@
 import {EVENT_TYPE_GROUPS, TRANSFER_EVENTS, ACTIVITY_EVENTS} from "../../../../../../const";
-import {createElement} from "../../../../../../util";
 import EventType from "./event-type-item";
+import AbstractElement from "../../../../../abstract-element";
 
 const createEventTypeListTemplate = () => {
   const typeGroupWithTypeItems = new Map();
@@ -23,24 +23,12 @@ const createEventTypeListTemplate = () => {
   ).join(``);
 };
 
-export default class EventTypeList {
+export default class EventTypeList extends AbstractElement {
   constructor() {
-    this._element = null;
+    super();
   }
 
   getTemplate() {
     return createEventTypeListTemplate();
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

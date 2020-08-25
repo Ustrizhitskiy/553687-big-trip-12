@@ -1,4 +1,4 @@
-import {createElement} from "../../../../util";
+import AbstractElement from "../../../abstract-element";
 
 const createOfferTemplate = (offerItem) => {
   return (
@@ -10,25 +10,13 @@ const createOfferTemplate = (offerItem) => {
   );
 };
 
-export default class Offer {
+export default class Offer extends AbstractElement {
   constructor(offerItem) {
+    super();
     this._offerItem = offerItem;
-    this._element = null;
   }
 
   getTemplate() {
     return createOfferTemplate(this._offerItem);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

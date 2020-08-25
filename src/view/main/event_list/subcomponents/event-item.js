@@ -1,6 +1,7 @@
 import {ACTIVITY_EVENTS} from "../../../../const";
-import {createElement, getOnlyTimeFromDate, getTimeFromStartToEnd} from "../../../../util";
+import {getOnlyTimeFromDate, getTimeFromStartToEnd} from "../../../../util/date_and_time";
 import Offer from "./offer";
+import AbstractElement from "../../../abstract-element";
 
 const getPreposition = (type) => {
   return ACTIVITY_EVENTS.some((elem) => elem === type) ? `in` : `to`;
@@ -40,25 +41,24 @@ const createEventItemTemplate = (event) => {
   );
 };
 
-export default class EventItem {
+export default class EventItem extends AbstractElement {
   constructor(event) {
+    super();
     this._event = event;
-    this._element = null;
+    this._editClickHandler = this._editClickHandler.bind(this);
   }
 
   getTemplate() {
     return createEventItemTemplate(this._event);
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
+  _editClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.editClick();
   }
 
-  removeElement() {
-    this._element = null;
+  setEditClickHandler(callback) {
+    this._callback.editClick = callback;
+    this.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, this._editClickHandler);
   }
 }

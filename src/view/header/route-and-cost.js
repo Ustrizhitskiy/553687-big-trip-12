@@ -1,4 +1,4 @@
-import {createElement} from "../../util";
+import AbstractElement from "../abstract-element";
 
 const createRouteAndCostTemplate = (events) => {
   const getTripRoute = (sortedEventsByDate) => {
@@ -62,25 +62,13 @@ const createRouteAndCostTemplate = (events) => {
   );
 };
 
-export default class RouteAndCostView {
+export default class RouteAndCostView extends AbstractElement {
   constructor(events) {
+    super();
     this._events = events;
-    this._element = null;
   }
 
   getTemplate() {
     return createRouteAndCostTemplate(this._events);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
