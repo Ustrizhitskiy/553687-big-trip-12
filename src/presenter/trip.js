@@ -71,6 +71,10 @@ export default class Trip {
   }
 
   _renderChangedEventList(type) {
+    if (this._currentFilter === type || this._currentSort === type) {
+      return;
+    }
+
     const isFilter = Object.values(FilterItems).some((value) => value === type);
     if (isFilter) {
       this._currentFilter = type;
@@ -78,7 +82,6 @@ export default class Trip {
       this._currentSort = type;
     }
     this._eventList.removeElement();
-    this._eventList = new EventList(this._events, this._currentSort, this._currentFilter);
     this._renderEventsContainer();
   }
 
