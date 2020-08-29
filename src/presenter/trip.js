@@ -1,4 +1,4 @@
-import {render, RenderPosition} from "../util/render";
+import {remove, render, RenderPosition} from "../util/render";
 import RouteAndCostView from "../view/header/route-and-cost";
 import MenuTabs from "../view/header/menu-tabs";
 import FilterList from "../view/header/filter/filter-list";
@@ -60,7 +60,7 @@ export default class TripPresenter {
     } else {
       this._currentSort = type;
     }
-    this._eventList.removeElement();
+    remove(this._eventList);
     this._renderEventsContainer();
   }
 

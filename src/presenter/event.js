@@ -1,6 +1,6 @@
 import EventItem from "../view/main/event_list/subcomponents/event-item";
 import EventEditCard from "../view/main/event_card/event-edit-card";
-import {render, RenderPosition, replace} from "../util/render";
+import {remove, render, RenderPosition, replace} from "../util/render";
 
 export default class EventPresenter {
   constructor(eventListContainer) {
@@ -17,13 +17,35 @@ export default class EventPresenter {
   init(event) {
     this._event = event;
 
+    const prevEventViewComponent = this._eventViewComponent;
+    const prevEventEditComponent = this._eventEditComponent;
+
     this._eventViewComponent = new EventItem(event);
     this._eventEditComponent = new EventEditCard(event);
 
     this._eventViewComponent.setEditClickHandler(this._handleEditClick);
     this._eventEditComponent.setFormSubmitHandler(this._handleFormSubmit);
 
-    render(this._eventListContainer, this._eventViewComponent, RenderPosition.BEFOREEND);
+    if (prevEventViewComponent === null || prevEventEditComponent === null) {
+      render(this._eventListContainer, this._eventViewComponent, RenderPosition.BEFOREEND);
+      return;
+    }
+
+    if (this._eventListContainer.getElement().contains(prevEventViewComponent.getElement())) {
+      replace(this._eventViewComponent, prevEventViewComponent);
+    }
+
+    if (this._eventListContainer.getElement().contains(prevEventEditComponent.getElement())) {
+      replace(this._eventEditComponent, prevEventEditComponent);
+    }
+
+    remove(prevEventViewComponent);
+    remove(prevEventEditComponent);
+  }
+
+  destroy() {
+    remove(this._eventViewComponent);
+    remove(this._eventEditComponent);
   }
 
   _replaceCardToForm() {
