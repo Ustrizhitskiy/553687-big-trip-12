@@ -7,17 +7,27 @@ import SortList from "../view/main/sort-list";
 import {FilterItems, SortItems} from "../const";
 import EventList from "../view/main/event_list/event-list";
 import TripDayList from "../view/main/event_list/subcomponents/trip-day-list";
-import EventPresenter from "./event";
+import EventPresenter from "./event-presenter";
+import {updateEvent} from "../util/common";
 
 export default class TripPresenter {
   constructor() {
     this._currentFilter = FilterItems.EVERYTHING;
     this._currentSort = SortItems.EVENT;
+    this._eventPresenters = {};
 
     this._menuTabsComponent = new MenuTabs();
     this._filterListComponent = new FilterList();
     this._sortListComponent = new SortList();
     this._noEventComponent = new NoEvent();
+
+    this._handleEventChange = this._handleEventChange.bind(this);
+  }
+
+  _handleEventChange(updatedEvent) {
+    this._events = updateEvent(this._events, updatedEvent);
+    this._sourcedEvents = updatedEvent(this._sourcedEvents, updatedEvent);
+    this._eventPresenters[updatedEvent.id].init(updatedEvent);
   }
 
   _renderRouteAndCostComponent(tripMainHeaderElement) {
@@ -47,6 +57,14 @@ export default class TripPresenter {
   _renderEvent(eventListPerDay, event) {
     const eventPresenter = new EventPresenter(eventListPerDay);
     eventPresenter.init(event);
+    this._eventPresenters[event.id] = eventPresenter;
+  }
+
+  _clearEventPresenters() {
+    Object
+      .values(this._eventPresenters)
+      .forEach((presenter) => presenter.destroy());
+    this._eventPresenters = {};
   }
 
   _renderChangedEventList(type) {
@@ -106,6 +124,7 @@ export default class TripPresenter {
 
   init(events) {
     this._events = events.slice();
+    this._sourcedEvents = events.slice();
 
     this._renderHeader();
 

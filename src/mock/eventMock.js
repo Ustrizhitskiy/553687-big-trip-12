@@ -2,6 +2,11 @@ import {getRandomInteger} from "../util/common";
 import {TRANSFER_EVENTS, ACTIVITY_EVENTS} from "../const";
 import {generateOffers} from "./offerMock";
 
+// Генерируем id точки маршрута
+const generateId = () => {
+  return Date.now() + parseInt(Math.random() * 10000, 10);
+};
+
 // Генерируем тип точки маршрута
 const generateTypeEvent = () => {
   const typeEvent = TRANSFER_EVENTS.concat(ACTIVITY_EVENTS);
@@ -75,6 +80,7 @@ export const generateEvent = () => {
   const generatedStartAndEndDates = generateStartAndEndDate();
 
   return {
+    id: generateId(),
     routePointType: generateTypeEvent(),
     city: generateCityDestination(),
     startDate: generatedStartAndEndDates[0],

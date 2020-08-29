@@ -1,5 +1,5 @@
 import {generateEvent} from "./mock/eventMock";
-import TripPresenter from "./presenter/trip";
+import TripPresenter from "./presenter/trip-presenter";
 
 const EVENT_COUNT = 35;
 
