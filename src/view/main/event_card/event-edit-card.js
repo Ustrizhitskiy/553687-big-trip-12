@@ -9,6 +9,7 @@ const CARD_BLANK = {
   startDate: null,
   endDate: null,
   cost: 0,
+  isFavorite: false,
   offers: [],
   destinationInfo: {
     description: ``,
@@ -35,6 +36,7 @@ export default class EventEditCard extends AbstractElement {
     super();
     this._tripEvent = tripEvent || CARD_BLANK;
     this._formSubmitHandler = this._formSubmitHandler.bind(this);
+    this._favoriteClickHandler = this._favoriteClickHandler.bind(this);
   }
 
   getTemplate() {
@@ -46,8 +48,18 @@ export default class EventEditCard extends AbstractElement {
     this._callback.formSubmit();
   }
 
+  _favoriteClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.favoriteClick();
+  }
+
   setFormSubmitHandler(callback) {
     this._callback.formSubmit = callback;
     this.getElement().addEventListener(`submit`, this._formSubmitHandler);
+  }
+
+  setFavoriteClickHandler(callback) {
+    this._callback.favoriteClick = callback;
+    this.getElement().querySelector(`.event__favorite-btn`).addEventListener(`click`, this._favoriteClickHandler);
   }
 }
