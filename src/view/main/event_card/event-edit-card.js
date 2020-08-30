@@ -1,7 +1,7 @@
 import EventDestination from "./subcomponents/event-destination";
 import EventDetails from "./subcomponents/event-details";
 import EventEditHeader from "./subcomponents/header/event-header";
-import AbstractElement from "../../abstract-element";
+import SmartElement from "../../smart-element";
 
 const CARD_BLANK = {
   routePointType: `Flight`,
@@ -17,10 +17,10 @@ const CARD_BLANK = {
   }
 };
 
-const createEventCardTemplate = (event) => {
-  const cardHeader = new EventEditHeader(event).getTemplate();
-  const cardDetails = new EventDetails(event.offers).getTemplate();
-  const cardDestinationInfo = new EventDestination(event.destinationInfo).getTemplate();
+const createEventCardTemplate = (data) => {
+  const cardHeader = new EventEditHeader(data).getTemplate();
+  const cardDetails = new EventDetails(data.offers).getTemplate();
+  const cardDestinationInfo = new EventDestination(data.destinationInfo).getTemplate();
 
   return (
     `<form class="trip-events__item  event  event--edit" action="#" method="post">
@@ -31,7 +31,7 @@ const createEventCardTemplate = (event) => {
   );
 };
 
-export default class EventEditCard extends AbstractElement {
+export default class EventEditCard extends SmartElement {
   constructor(tripEvent) {
     super();
     this._tripEvent = tripEvent || CARD_BLANK;
@@ -62,4 +62,6 @@ export default class EventEditCard extends AbstractElement {
     this._callback.favoriteClick = callback;
     this.getElement().querySelector(`.event__favorite-btn`).addEventListener(`click`, this._favoriteClickHandler);
   }
+
+  restoreHandlers() {}
 }
