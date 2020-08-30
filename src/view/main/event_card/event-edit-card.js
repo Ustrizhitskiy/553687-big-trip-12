@@ -45,7 +45,7 @@ export default class EventEditCard extends AbstractElement {
 
   _formSubmitHandler(evt) {
     evt.preventDefault();
-    this._callback.formSubmit();
+    this._callback.formSubmit(this._tripEvent);
   }
 
   _favoriteClickHandler(evt) {
