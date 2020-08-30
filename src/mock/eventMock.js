@@ -1,6 +1,6 @@
 import {getRandomInteger} from "../util/common";
 import {TRANSFER_EVENTS, ACTIVITY_EVENTS} from "../const";
-import {generateOffers} from "./offerMock";
+import {getOffersByType} from "./offerMock";
 
 // Генерируем id точки маршрута
 const generateId = () => {
@@ -62,7 +62,7 @@ const generateDestinationInfo = () => {
   sentenceList.pop();
 
   let generatedText = [];
-  const sentenceRandomCount = getRandomInteger(1, 5);
+  const sentenceRandomCount = getRandomInteger(0, 5);
   for (let i = 0; i < sentenceRandomCount; i++) {
     const randomIndex = getRandomInteger(0, sentenceList.length - 1);
 
@@ -83,17 +83,18 @@ const generateDestinationInfo = () => {
 };
 
 export const generateEvent = () => {
+  const type = generateTypeEvent();
   const generatedStartAndEndDates = generateStartAndEndDate();
 
   return {
     id: generateId(),
-    routePointType: generateTypeEvent(),
+    routePointType: type,
     city: generateCityDestination(),
     startDate: generatedStartAndEndDates[0],
     endDate: generatedStartAndEndDates[1],
     cost: generateCostEvent(),
     isFavorite: generateIsFavorite(),
-    offers: generateOffers(),
+    offers: getOffersByType(type),
     destinationInfo: generateDestinationInfo(),
   };
 };
