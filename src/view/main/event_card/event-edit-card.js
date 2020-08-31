@@ -32,25 +32,46 @@ const createEventCardTemplate = (data) => {
 };
 
 export default class EventEditCard extends SmartElement {
-  constructor(tripEvent) {
+  constructor(tripEvent = CARD_BLANK) {
     super();
-    this._tripEvent = tripEvent || CARD_BLANK;
+    this._data = EventEditCard.parseEventToData(tripEvent);
+
     this._formSubmitHandler = this._formSubmitHandler.bind(this);
     this._favoriteClickHandler = this._favoriteClickHandler.bind(this);
+    this._chooseTypeClickHandler = this._chooseTypeClickHandler.bind(this);
+    this._chooseCityInputHandler = this._chooseCityInputHandler.bind(this);
+
+    this._setInnerHandlers();
+  }
+
+  _setInnerHandlers() {}
+
+  resetForm(event) {
+    this.updateData(EventEditCard.parseEventToData(event));
   }
 
   getTemplate() {
-    return createEventCardTemplate(this._tripEvent);
+    return createEventCardTemplate(this._data);
   }
 
   _formSubmitHandler(evt) {
     evt.preventDefault();
-    this._callback.formSubmit(this._tripEvent);
+    this._callback.formSubmit(EventEditCard.parseDataToEvent(this._data));
   }
 
   _favoriteClickHandler(evt) {
     evt.preventDefault();
     this._callback.favoriteClick();
+  }
+
+  _chooseTypeClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.chooseTypeClick(evt.target.dataset.type);
+  }
+
+  _chooseCityInputHandler(evt) {
+    evt.preventDefault();
+    this._callback.chooseCityClick(evt.target.value);
   }
 
   setFormSubmitHandler(callback) {
@@ -61,6 +82,37 @@ export default class EventEditCard extends SmartElement {
   setFavoriteClickHandler(callback) {
     this._callback.favoriteClick = callback;
     this.getElement().querySelector(`.event__favorite-btn`).addEventListener(`click`, this._favoriteClickHandler);
+  }
+
+  setChooseTypeClickHandler(callback) {
+    this._callback.chooseTypeClick = callback;
+    this.getElement()
+      .querySelectorAll(`.event__type-item`)
+      .forEach((item) => {
+        item.addEventListener(`click`, this._chooseTypeClickHandler);
+      });
+  }
+
+  setChooseCityInput(callback) {
+    this._callback.chooseCityClick = callback;
+    this.getElement()
+      .querySelector(`.event__input--destination`)
+      .addEventListener(`input`, this._chooseCityInputHandler);
+  }
+
+  static parseEventToData(tripEvent) {
+    return Object.assign(
+        {},
+        tripEvent
+    );
+  }
+
+  static parseDataToEvent(data) {
+    return Object.assign({},
+        data,
+        {
+          isFavorite: false
+        });
   }
 
   restoreHandlers() {}

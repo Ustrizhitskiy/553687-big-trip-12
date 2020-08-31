@@ -8,7 +8,7 @@ export default class SmartElement extends AbstractElement {
 
   // АБСТРАКТНЫЙ метод для восстановления обработчиков событий после перерисовки
   restoreHandlers() {
-    throw new Error(`Abstract method not implemented: resetHandlers`);
+    throw new Error(`Abstract method not implemented: restoreHandlers`);
   }
 
   // Метод для удаления старого DOM-элемента, создания нового, поместить новый вместо старого, восстановить обработчики собфтий, вызвав restoreHandlers
@@ -25,7 +25,7 @@ export default class SmartElement extends AbstractElement {
     this.restoreHandlers();
   }
 
-  // Метод для обновления данных
+  // Метод для обновления данных (по Esc)
   updateData(update, onlyDataUpdating) {
     if (!update) {
       return;

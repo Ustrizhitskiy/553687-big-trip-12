@@ -1,6 +1,8 @@
 import EventItem from "../view/main/event_list/subcomponents/event-item";
 import EventEditCard from "../view/main/event_card/event-edit-card";
 import {remove, render, RenderPosition, replace} from "../util/render";
+import {getOffersByType} from "../mock/offerMock";
+import {generateDestinationInfo} from "../mock/eventMock";
 
 export default class EventPresenter {
   constructor(eventListContainer, changeData) {
@@ -14,6 +16,8 @@ export default class EventPresenter {
     this._handleFormSubmit = this._handleFormSubmit.bind(this);
     this._escKeyDownHandler = this._escKeyDownHandler.bind(this);
     this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
+    this._handleChooseEventTypeClick = this._handleChooseEventTypeClick.bind(this);
+    this._handleChooseCityClick = this._handleChooseCityClick.bind(this);
   }
 
   init(event) {
@@ -28,6 +32,8 @@ export default class EventPresenter {
     this._eventViewComponent.setEditClickHandler(this._handleEditClick);
     this._eventEditComponent.setFormSubmitHandler(this._handleFormSubmit);
     this._eventEditComponent.setFavoriteClickHandler(this._handleFavoriteClick);
+    this._eventEditComponent.setChooseTypeClickHandler(this._handleChooseEventTypeClick);
+    this._eventEditComponent.setChooseCityInput(this._handleChooseCityClick);
 
     if (prevEventViewComponent === null || prevEventEditComponent === null) {
       render(this._eventListContainer, this._eventViewComponent, RenderPosition.BEFOREEND);
@@ -74,9 +80,39 @@ export default class EventPresenter {
     this._changeData(Object.assign({}, this._event, {isFavorite: !this._event.isFavorite}));
   }
 
+  _handleChooseEventTypeClick(type) {
+    if (this._event.routePointType !== type) {
+      // Получаем новый список доп предложений по типу (общий список мы получим GET запросом), а пока из функции мока:
+      const offersByType = getOffersByType(type);
+      this._changeData(Object.assign(
+          {},
+          this._event,
+          {routePointType: type},
+          {offers: offersByType}
+      ));
+    }
+  }
+
+  _handleChooseCityClick(city) {
+    // console.log(city);
+    // Получаем описание места и список фото по нзванию города (список получим GET запросом):
+    // const destinationInfo = getDestinationInfoByCity(city);
+    // Если нет такого города в списке, ничего не делаем (выходим из метода)
+
+    // , а пока просто сгенерим новый из моков:
+    const destinationInfo = generateDestinationInfo();
+    this._changeData(Object.assign(
+        {},
+        this._event,
+        {city},
+        {destinationInfo}
+    ));
+  }
+
   _escKeyDownHandler(evt) {
     if (evt.key === `Escape` || evt.key === `Esc`) {
       evt.preventDefault();
+      this._eventEditComponent.resetForm(this._event);
       this._replaceFormToCard();
     }
   }

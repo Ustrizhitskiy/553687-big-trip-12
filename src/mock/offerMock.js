@@ -5,7 +5,7 @@ allOffersAndTypes.set(`Flight`, [`Add luggage`, `Switch to comfort class`, `Add 
 allOffersAndTypes.set(`Drive`, []);
 allOffersAndTypes.set(`Transport`, [`Add luggage`]);
 allOffersAndTypes.set(`Ship`, [`Add luggage`, `Switch to comfort class`, `Add meal`, `Choose seats`]);
-allOffersAndTypes.set(`Train`, [`Travel by train`]);
+allOffersAndTypes.set(`Train`, [`Seat with a table`]);
 allOffersAndTypes.set(`Bus`, [`Add luggage`, `Choose seats`]);
 allOffersAndTypes.set(`Taxi`, [`Add luggage`]);
 allOffersAndTypes.set(`Restaurant`, [`Table order`, `Seat near the window`, `Tips`]);

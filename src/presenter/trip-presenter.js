@@ -24,10 +24,18 @@ export default class TripPresenter {
     this._handleEventChange = this._handleEventChange.bind(this);
   }
 
+  // Вызывается при изменении чего-либо в форме
   _handleEventChange(updatedEvent) {
     this._events = updateEvent(this._events, updatedEvent);
     this._sourcedEvents = updateEvent(this._sourcedEvents, updatedEvent);
     this._eventPresenters[updatedEvent.id].init(updatedEvent);
+  }
+
+  _clearEventPresenters() {
+    Object
+      .values(this._eventPresenters)
+      .forEach((presenter) => presenter.destroy());
+    this._eventPresenters = {};
   }
 
   _renderRouteAndCostComponent(tripMainHeaderElement) {
@@ -58,13 +66,6 @@ export default class TripPresenter {
     const eventPresenter = new EventPresenter(eventListPerDay, this._handleEventChange);
     eventPresenter.init(event);
     this._eventPresenters[event.id] = eventPresenter;
-  }
-
-  _clearEventPresenters() {
-    Object
-      .values(this._eventPresenters)
-      .forEach((presenter) => presenter.destroy());
-    this._eventPresenters = {};
   }
 
   _renderChangedEventList(type) {
