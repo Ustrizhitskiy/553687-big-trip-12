@@ -22,6 +22,7 @@ export default class TripPresenter {
     this._noEventComponent = new NoEvent();
 
     this._handleEventChange = this._handleEventChange.bind(this);
+    this._handleModeChange = this._handleModeChange.bind(this);
   }
 
   // Вызывается при изменении чего-либо в форме
@@ -36,6 +37,12 @@ export default class TripPresenter {
       .values(this._eventPresenters)
       .forEach((presenter) => presenter.destroy());
     this._eventPresenters = {};
+  }
+
+  _handleModeChange() {
+    Object
+      .values(this._eventPresenters)
+      .forEach((presenter) => presenter.resetView());
   }
 
   _renderRouteAndCostComponent(tripMainHeaderElement) {
@@ -63,7 +70,7 @@ export default class TripPresenter {
   }
 
   _renderEvent(eventListPerDay, event) {
-    const eventPresenter = new EventPresenter(eventListPerDay, this._handleEventChange);
+    const eventPresenter = new EventPresenter(eventListPerDay, this._handleEventChange, this._handleModeChange);
     eventPresenter.init(event);
     this._eventPresenters[event.id] = eventPresenter;
   }
