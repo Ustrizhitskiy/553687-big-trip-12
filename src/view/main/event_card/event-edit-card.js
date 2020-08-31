@@ -46,7 +46,7 @@ export default class EventEditCard extends SmartElement {
 
   _setInnerHandlers() {}
 
-  resetView(event) {
+  resetEventView(event) {
     this.updateData(EventEditCard.parseEventToData(event));
   }
 
