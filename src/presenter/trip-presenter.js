@@ -1,4 +1,4 @@
-import {render, RenderPosition, replace} from "../util/render";
+import {remove, render, RenderPosition} from "../util/render";
 import RouteAndCostView from "../view/header/route-and-cost";
 import MenuTabs from "../view/header/menu-tabs";
 import FilterList from "../view/header/filter/filter-list";
@@ -7,18 +7,42 @@ import SortList from "../view/main/sort-list";
 import {FilterItems, SortItems} from "../const";
 import EventList from "../view/main/event_list/event-list";
 import TripDayList from "../view/main/event_list/subcomponents/trip-day-list";
-import EventItem from "../view/main/event_list/subcomponents/event-item";
-import EventEditCard from "../view/main/event_card/event-edit-card";
+import EventPresenter from "./event-presenter";
+import {updateEvent} from "../util/common";
 
-export default class Trip {
+export default class TripPresenter {
   constructor() {
     this._currentFilter = FilterItems.EVERYTHING;
     this._currentSort = SortItems.EVENT;
+    this._eventPresenters = {};
 
     this._menuTabsComponent = new MenuTabs();
     this._filterListComponent = new FilterList();
     this._sortListComponent = new SortList();
     this._noEventComponent = new NoEvent();
+
+    this._handleEventChange = this._handleEventChange.bind(this);
+    this._handleModeChange = this._handleModeChange.bind(this);
+  }
+
+  // Вызывается при изменении чего-либо в форме
+  _handleEventChange(updatedEvent) {
+    this._events = updateEvent(this._events, updatedEvent);
+    this._sourcedEvents = updateEvent(this._sourcedEvents, updatedEvent);
+    this._eventPresenters[updatedEvent.id].init(updatedEvent);
+  }
+
+  _clearEventPresenters() {
+    Object
+      .values(this._eventPresenters)
+      .forEach((presenter) => presenter.destroy());
+    this._eventPresenters = {};
+  }
+
+  _handleModeChange() {
+    Object
+      .values(this._eventPresenters)
+      .forEach((presenter) => presenter.resetView());
   }
 
   _renderRouteAndCostComponent(tripMainHeaderElement) {
@@ -46,28 +70,9 @@ export default class Trip {
   }
 
   _renderEvent(eventListPerDay, event) {
-    const eventViewComponent = new EventItem(event);
-    const eventFormComponent = new EventEditCard(event);
-
-    const onEscKeyDown = (evt) => {
-      if (evt.key === `Escape` || evt.key === `Esc`) {
-        evt.preventDefault();
-        replace(eventViewComponent, eventFormComponent);
-        document.removeEventListener(`keydown`, onEscKeyDown);
-      }
-    };
-
-    eventViewComponent.setEditClickHandler(() => {
-      replace(eventFormComponent, eventViewComponent);
-      document.addEventListener(`keydown`, onEscKeyDown);
-    });
-
-    eventFormComponent.setFormSubmitHandler(() => {
-      replace(eventViewComponent, eventFormComponent);
-      document.removeEventListener(`keydown`, onEscKeyDown);
-    });
-
-    render(eventListPerDay, eventViewComponent, RenderPosition.BEFOREEND);
+    const eventPresenter = new EventPresenter(eventListPerDay, this._handleEventChange, this._handleModeChange);
+    eventPresenter.init(event);
+    this._eventPresenters[event.id] = eventPresenter;
   }
 
   _renderChangedEventList(type) {
@@ -81,7 +86,7 @@ export default class Trip {
     } else {
       this._currentSort = type;
     }
-    this._eventList.removeElement();
+    remove(this._eventList);
     this._renderEventsContainer();
   }
 
@@ -127,6 +132,7 @@ export default class Trip {
 
   init(events) {
     this._events = events.slice();
+    this._sourcedEvents = events.slice();
 
     this._renderHeader();
 

@@ -23,7 +23,6 @@ export default class AbstractElement {
   }
 
   removeElement() {
-    this._element.remove();
     this._element = null;
   }
 }

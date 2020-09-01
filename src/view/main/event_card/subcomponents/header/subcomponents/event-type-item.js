@@ -11,7 +11,10 @@ const createItemTypeTemplate = (eventType) => {
         type="radio"
         name="event-type"
         value="${type}">
-      <label class="event__type-label  event__type-label--${type}" for="event-type-${type}-1">
+      <label
+       class="event__type-label  event__type-label--${type}"
+       data-type="${eventType}"
+       for="event-type-${type}-1">
         ${eventType}
        </label>
     </div>`

@@ -1,6 +1,11 @@
 import {getRandomInteger} from "../util/common";
 import {TRANSFER_EVENTS, ACTIVITY_EVENTS} from "../const";
-import {generateOffers} from "./offerMock";
+import {getOffersByType} from "./offerMock";
+
+// Генерируем id точки маршрута
+const generateId = () => {
+  return Date.now() + parseInt(Math.random() * 10000, 10);
+};
 
 // Генерируем тип точки маршрута
 const generateTypeEvent = () => {
@@ -43,15 +48,21 @@ const generateCostEvent = () => {
   return getRandomInteger(10, 1000);
 };
 
+// Генерируем флаг isFavorite
+const generateIsFavorite = () => {
+  const isFavorite = getRandomInteger(0, 1);
+  return isFavorite === 1;
+};
+
 // Генерируем описание и фото пункта назначения
-const generateDestinationInfo = () => {
+export const generateDestinationInfo = () => {
   const originalText = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras aliquet varius magna, non porta ligula feugiat eget. Fusce tristique felis at fermentum pharetra. Aliquam id orci ut lectus varius viverra. Nullam nunc ex, convallis sed finibus eget, sollicitudin eget ante. Phasellus eros mauris, condimentum sed nibh vitae, sodales efficitur ipsum. Sed blandit, eros vel aliquam faucibus, purus ex euismod diam, eu luctus nunc ante ut dui. Sed sed nisi sed augue convallis suscipit in sed felis. Aliquam erat volutpat. Nunc fermentum tortor ac porta dapibus. In rutrum ac purus sit amet tempus.`;
 
   const sentenceList = originalText.split(`.`);
   sentenceList.pop();
 
   let generatedText = [];
-  const sentenceRandomCount = getRandomInteger(1, 5);
+  const sentenceRandomCount = getRandomInteger(0, 5);
   for (let i = 0; i < sentenceRandomCount; i++) {
     const randomIndex = getRandomInteger(0, sentenceList.length - 1);
 
@@ -72,15 +83,18 @@ const generateDestinationInfo = () => {
 };
 
 export const generateEvent = () => {
+  const type = generateTypeEvent();
   const generatedStartAndEndDates = generateStartAndEndDate();
 
   return {
-    routePointType: generateTypeEvent(),
+    id: generateId(),
+    routePointType: type,
     city: generateCityDestination(),
     startDate: generatedStartAndEndDates[0],
     endDate: generatedStartAndEndDates[1],
     cost: generateCostEvent(),
-    offers: generateOffers(),
+    isFavorite: generateIsFavorite(),
+    offers: getOffersByType(type),
     destinationInfo: generateDestinationInfo(),
   };
 };

@@ -1,6 +1,10 @@
 import AbstractElement from "../../../abstract-element";
 
 const createEventDetailsTemplate = (offers) => {
+  if (offers.length === 0) {
+    return ``;
+  }
+
   const offersList = offers.map((offer, index) =>
     `<div class="event__offer-selector">
       <input

@@ -10,7 +10,7 @@ const getPreposition = (type) => {
 const createEventItemTemplate = (event) => {
   const {routePointType, startDate, endDate, cost, city, offers} = event;
 
-  const visuallyOffers = offers.slice(0, 3);
+  const visuallyOffers = offers.length <= 3 ? offers : offers.slice(0, 3);
   const offersTemplate = visuallyOffers.map((offer) => new Offer(offer).getTemplate()).join(``);
 
   return (
