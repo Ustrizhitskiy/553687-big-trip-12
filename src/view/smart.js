@@ -1,4 +1,4 @@
-import AbstractElement from "./abstract-element";
+import AbstractElement from "./abstract";
 
 export default class SmartElement extends AbstractElement {
   constructor() {
@@ -6,12 +6,10 @@ export default class SmartElement extends AbstractElement {
     this._data = {};
   }
 
-  // АБСТРАКТНЫЙ метод для восстановления обработчиков событий после перерисовки
   restoreHandlers() {
     throw new Error(`Abstract method not implemented: restoreHandlers`);
   }
 
-  // Метод для удаления старого DOM-элемента, создания нового, поместить новый вместо старого, восстановить обработчики собфтий, вызвав restoreHandlers
   updateElement() {
     let previousElement = this.getElement();
     const parent = previousElement.parentElement;
@@ -25,7 +23,6 @@ export default class SmartElement extends AbstractElement {
     this.restoreHandlers();
   }
 
-  // Метод для обновления данных (по Esc)
   updateData(update, onlyDataUpdating) {
     if (!update) {
       return;
@@ -43,5 +40,4 @@ export default class SmartElement extends AbstractElement {
 
     this.updateElement();
   }
-
 }
