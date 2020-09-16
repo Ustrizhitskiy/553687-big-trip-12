@@ -135,7 +135,7 @@ export default class TripPointPresenter {
   async _getDestinations() {
     await this._api.getDestinations()
       .then((cities) => {
-        console.log(`asdsd`);
+        // console.log(`asdsd`);
         this._tripPointEditComponent.setCityChange(cities);
       })
       .catch(() => {
@@ -150,7 +150,7 @@ export default class TripPointPresenter {
 
   async _handleEditClick() {
     await this._getDestinations();
-    console.log(this._tripPointEditComponent._destinationList);
+    // console.log(this._tripPointEditComponent._destinationList);
     this._getOffers();
     this._replaceCardToForm();
   }

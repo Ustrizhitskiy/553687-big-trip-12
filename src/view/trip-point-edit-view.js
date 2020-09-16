@@ -69,12 +69,11 @@ const createDestinationListTemplate = (destinationNameList) => {
 
 const createHeader = (data, cityList, isNewPoint) => {
   const {type, destination, basePrice, isFavorite, dateFrom, dateTo, isSaving, isDeleting, isDisabled} = data;
-  console.log(isNewPoint);
 
   const eventTypeList = createTypeListTemplate();
   const preposition = getPreposition(type);
   const destinationNameList = createDestinationListTemplate(cityList);
-  console.log(destinationNameList);
+  // console.log(destinationNameList);
 
   return (
     `<header class="event__header">
@@ -257,7 +256,6 @@ export default class TripPointEditView extends SmartElement {
 
   getTemplate() {
     const destinationNameList = this._destinationList.map((destination) => destination.name);
-    console.log(destinationNameList);
     return createPointEditTemplate(this._data, this._availableOfferList, destinationNameList, this._isNewPoint);
   }
 
@@ -402,16 +400,16 @@ export default class TripPointEditView extends SmartElement {
     }
   }
 
-  _formResetClickHandler(evt) {
-    alert(evt.target.innerText);
-    // Если у нашего элемента (trip-point-edit) уже есть id (уже точка есть на сервере), то отправляем DELETE-запрос на удаление элемента.
-    // Если нет id - значит это создание нового элемента и можно просто удалить элемент из DOM-дерева
-    // Можно придумать другой способ идентификации кнопки
-    // console.log(this._data);
-    return;   // Временно, чтобы не удалить точку маршрута
-    evt.preventDefault();
-    this._callback.resetClick(TripPointEditView.parseDataToPoint(this._data));
-  }
+  // _formResetClickHandler(evt) {
+  //   alert(evt.target.innerText);
+  //   // Если у нашего элемента (trip-point-edit) уже есть id (уже точка есть на сервере), то отправляем DELETE-запрос на удаление элемента.
+  //   // Если нет id - значит это создание нового элемента и можно просто удалить элемент из DOM-дерева
+  //   // Можно придумать другой способ идентификации кнопки
+  //   // console.log(this._data);
+  //   return;   // Временно, чтобы не удалить точку маршрута
+  //   evt.preventDefault();
+  //   this._callback.resetClick(TripPointEditView.parseDataToPoint(this._data));
+  // }
 
   setFormResetClickHandler(callback) {
     this._callback.resetClick = callback;

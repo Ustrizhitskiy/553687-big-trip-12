@@ -87,7 +87,6 @@ export default class BoardPresenter {
   }
 
   _handleViewAction(actionType, updateType, update) {
-    alert(updateType)
     // alert(actionType);
     // console.log(updateType);
     // console.log(update);
