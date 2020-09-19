@@ -1,15 +1,33 @@
-export const FilterItems = {
+export const FilterType = {
   EVERYTHING: `everything`,
   FUTURE: `future`,
   PAST: `past`
 };
 
-export const SortItems = {
+export const SortType = {
   EVENT: `event`,
   TIME: `time`,
   PRICE: `price`
 };
 
-export const EVENT_TYPE_GROUPS = [`Transfer`, `Activity`];
-export const TRANSFER_EVENTS = [`Taxi`, `Bus`, `Train`, `Ship`, `Transport`, `Drive`, `Flight`];
-export const ACTIVITY_EVENTS = [`Check-in`, `Sightseeing`, `Restaurant`];
+export const UpdateType = {
+  PATCH: `PATCH`,
+  MINOR: `MINOR`,
+  MAJOR: `MAJOR`,
+  INIT: `INIT`
+};
+
+export const UserAction = {
+  ADD_TRIP_POINT: `ADD_TRIP_POINT`,
+  UPDATE_TRIP_POINT: `UPDATE_TRIP_POINT`,
+  DELETE_TRIP_POINT: `DELETE_TRIP_POINT`
+};
+
+export const MenuItem = {
+  ADD_NEW_POINT: `add_new_point`,
+  TABLE: `table`,
+  STATISTICS: `stats`
+};
+
+export const TRANSFER_EVENTS = [`taxi`, `bus`, `train`, `ship`, `transport`, `drive`, `flight`];
+export const ACTIVITY_EVENTS = [`check-in`, `sightseeing`, `restaurant`];
