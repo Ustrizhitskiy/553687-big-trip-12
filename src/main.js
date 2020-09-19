@@ -7,6 +7,7 @@ import {FilterType, MenuItem, UpdateType} from "./const";
 import FilterPresenter from "./presenter/filter-presenter";
 import BoardPresenter from "./presenter/board-presenter";
 import OfferModel from "./model/offer-model";
+import DestinationModel from "./model/destination-model";
 
 const AUTHORIZATION = `Basic kTy9gIdsz2317rD`;
 const END_POINT = `https://12.ecmascript.pages.academy/big-trip`;
@@ -20,6 +21,7 @@ const menuTitleElement = tabsAndFiltersTitles[0];
 const filterModel = new FilterModel();
 const tripPontModel = new TripPointModel();
 const offerModel = new OfferModel();
+const destinationModel = new DestinationModel();
 const api = new Api(END_POINT, AUTHORIZATION);
 
 const handleNewFormClose = () => {};
@@ -56,9 +58,9 @@ const filterPresenter = new FilterPresenter(filterTitleComponent, filterModel, t
 filterPresenter.init();
 
 const boardContainer = document.querySelector(`.trip-events`);
-const boardPresenter = new BoardPresenter(boardContainer, tripPontModel, offerModel, filterModel, api);
+const boardPresenter = new BoardPresenter(boardContainer, tripPontModel, offerModel, destinationModel, filterModel, api);
 
-const getInitDataFromServer = async (firstFun, secondFun) => {
+const getInitDataFromServer = async (firstFun, secondFun, thirdFun) => {
   await firstFun()
     .then((offers) => {
       offerModel.setOffers(offers);
@@ -75,6 +77,12 @@ const getInitDataFromServer = async (firstFun, secondFun) => {
       tripPontModel.setTripPoints(UpdateType.INIT, []);
       throw new Error(`Can't get trip points`);
     });
+
+  await thirdFun()
+    .then((destinations) => {
+      destinationModel.setDestinations(destinations);
+    })
+    .catch(() => {});
 };
 
 const getOffersFromServer = () => {
@@ -85,6 +93,10 @@ const getPointsFromServer = () => {
   return api.getPoints();
 };
 
-getInitDataFromServer(getOffersFromServer, getPointsFromServer).then(() => {});
+const getDestinationsFromServer = () => {
+  return api.getDestinations();
+};
+
+getInitDataFromServer(getOffersFromServer, getPointsFromServer, getDestinationsFromServer).then(() => {});
 
 boardPresenter.init();

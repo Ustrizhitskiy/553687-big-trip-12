@@ -10,10 +10,11 @@ import TripPointListView from "../view/trip-point-list-view";
 import TripPointPresenter, {State as TripPointPresenterViewState} from "./trip-point-presenter";
 
 export default class BoardPresenter {
-  constructor(boardContainer, tripPointModel, offerModel, filterModel, api) {
+  constructor(boardContainer, tripPointModel, offerModel, destinationModel, filterModel, api) {
     this._boardContainer = boardContainer;
     this._tripPointModel = tripPointModel;
     this._offerModel = offerModel;
+    this._destinationModel = destinationModel;
     this._filterModel = filterModel;
     this._api = api;
     this._currentSortType = SortType.EVENT;
@@ -32,7 +33,7 @@ export default class BoardPresenter {
     this._handleModeChange = this._handleModeChange.bind(this);
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
 
-    this._newPointPresenter = new NewPointPresenter(this._tripPointListComponent, this._handleViewAction);
+    this._newPointPresenter = new NewPointPresenter(this._tripPointListComponent, this._handleViewAction, this._offerModel, this._destinationModel);
   }
 
   init() {

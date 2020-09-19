@@ -33,6 +33,7 @@ export default class Api {
       body: JSON.stringify(TripPointModel.adaptToServer(point)),
       headers: new Headers({"Content-Type": `application/json`})
     })
+      .then(Api.toJSON)
       .then(TripPointModel.adaptToClient);
   }
 

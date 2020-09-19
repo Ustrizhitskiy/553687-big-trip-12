@@ -7,7 +7,7 @@ import "../../node_modules/flatpickr/dist/flatpickr.min.css";
 import {capitalizeFirstLetter} from "../utils/render";
 
 const POINT_BLANK = {
-  type: `Flight`,
+  type: `bus`,
   dateFrom: null,
   dateTo: null,
   basePrice: 0,
@@ -80,7 +80,7 @@ const createHeader = (data, cityList, isNewPoint) => {
       <div class="event__type-wrapper">
         <label class="event__type  event__type-btn" for="event-type-toggle-1">
           <span class="visually-hidden">Choose event type</span>
-          <img class="event__type-icon" width="17" height="17" src="img/icons/${type}.png" alt="Event type icon">
+          <img class="event__type-icon" width="17" height="17" src="img/icons/${type ? type : `bus`}.png" alt="Event type icon">
         </label>
         <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox">
         <div class="event__type-list">
@@ -89,9 +89,9 @@ const createHeader = (data, cityList, isNewPoint) => {
       </div>
       <div class="event__field-group  event__field-group--destination">
         <label class="event__label  event__type-output" for="event-destination-1">
-          ${capitalizeFirstLetter(type)} ${preposition}
+          ${type ? capitalizeFirstLetter(type) : `Bus`} ${preposition}
         </label>
-        <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${destination.name}" list="destination-list-1">
+        <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${destination ? destination.name : ``}" list="destination-list-1">
         <datalist id="destination-list-1">
           ${destinationNameList}
         </datalist>
@@ -112,7 +112,7 @@ const createHeader = (data, cityList, isNewPoint) => {
           <span class="visually-hidden">Price</span>
           &euro;
         </label>
-        <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${basePrice}">
+        <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${basePrice ? basePrice : ``}">
       </div>
       <button class="event__save-btn  btn  btn--blue" type="submit" ${isDisabled ? `disabled` : ``}>${isSaving ? `Saving` : `Save`}</button>
       ${isNewPoint ? `<button class="event__reset-btn" type="reset">Cancel</button>` : `<button class="event__reset-btn" type="reset">${isDeleting ? `Deleting` : `Delete`}</button>`}
@@ -150,7 +150,7 @@ const createDetailsTemplate = (currentOffers, availableOffers) => {
         id="${offer.titleForAttr}"
         type="checkbox"
         name="${offer.titleForAttr}"
-        ${currentOffers.some((offerFromPoint) => offerFromPoint.title === offer.title) ? `checked` : ``}>
+        ${currentOffers && currentOffers.some((offerFromPoint) => offerFromPoint.title === offer.title) ? `checked` : ``}>
       <label class="event__offer-label" for="${offer.titleForAttr}">
         <span class="event__offer-title">${offer.title}</span>
         &plus;
@@ -215,12 +215,12 @@ const createPointEditTemplate = (data, availableOfferList, destinationNameList, 
 };
 
 export default class TripPointEditView extends SmartElement {
-  constructor(isNewPoint = false, tripPoint = POINT_BLANK, availableOffer = []) {
+  constructor(isNewPoint = false, tripPoint = POINT_BLANK, availableOffer = [], destinationList = []) {
     // console.log(tripPoint);
     super();
     this._data = TripPointEditView.parsePointToData(tripPoint);
     this._datepicker = null;
-    this._destinationList = [];
+    this._destinationList = destinationList;
     this._allOffersEntity = [];
     this._availableOfferList = availableOffer.offers;
     this._isNewPoint = isNewPoint;
@@ -230,7 +230,7 @@ export default class TripPointEditView extends SmartElement {
     this._dateFromChangeHandler = this._dateFromChangeHandler.bind(this);
     this._dateToChangeHandler = this._dateToChangeHandler.bind(this);
     this._formSubmitHandler = this._formSubmitHandler.bind(this);
-    this._formResetClickHandler = this._formResetClickHandler.bind(this);
+    this._deleteClickHandler = this._deleteClickHandler.bind(this);
     this._favoriteClickHandler = this._favoriteClickHandler.bind(this);
     this._changePriceHandler = this._changePriceHandler.bind(this);
     this._chooseOfferClickHandler = this._chooseOfferClickHandler.bind(this);
@@ -277,31 +277,27 @@ export default class TripPointEditView extends SmartElement {
       time24hr: `time_24hr`
     };
 
-    if (this._data.dateFrom) {
-      this._datepicker = flatpickr(
-          this.getElement().querySelector(`#event-start-time-1`),
-          {
-            enableTime: true,
-            dateFormat: `d/m/y H:i`,
-            [obj.time24hr]: true,
-            defaultDate: this._data.dateFrom,
-            onChange: this._dateFromChangeHandler
-          }
-      );
-    }
+    this._datepicker = flatpickr(
+        this.getElement().querySelector(`#event-start-time-1`),
+        {
+          enableTime: true,
+          dateFormat: `d/m/y H:i`,
+          [obj.time24hr]: true,
+          defaultDate: this._data.dateFrom,
+          onChange: this._dateFromChangeHandler
+        }
+    );
 
-    if (this._data.dateTo) {
-      this._datepicker = flatpickr(
-          this.getElement().querySelector(`#event-end-time-1`),
-          {
-            enableTime: true,
-            dateFormat: `d/m/y H:i`,
-            [obj.time24hr]: true,
-            defaultDate: this._data.dateTo,
-            onChange: this._dateToChangeHandler
-          }
-      );
-    }
+    this._datepicker = flatpickr(
+        this.getElement().querySelector(`#event-end-time-1`),
+        {
+          enableTime: true,
+          dateFormat: `d/m/y H:i`,
+          [obj.time24hr]: true,
+          defaultDate: this._data.dateTo,
+          onChange: this._dateToChangeHandler
+        }
+    );
   }
 
   _setInnerHandlers() {
@@ -325,7 +321,7 @@ export default class TripPointEditView extends SmartElement {
     this.getElement()
       .querySelectorAll(`.event__reset-btn`)
       .forEach((item) => {
-        item.addEventListener(`click`, this._formResetClickHandler);
+        item.addEventListener(`click`, this._deleteClickHandler);
       });
     this.getElement()
       .querySelectorAll(`.event__offer-selector`)
@@ -338,7 +334,13 @@ export default class TripPointEditView extends SmartElement {
     const id = evt.target.id;
     if (id && id !== ``) {
       const newOfferList = this._data.offers.slice();
-      const offerTitle = capitalizeFirstLetter(id.split(`-`).join(` `));
+      const titleWords = id.split(`-`);
+      const isCheckInOrCheckOut = (titleWords[titleWords.length - 1] === `in` || titleWords[titleWords.length - 1] === `out`) && titleWords[titleWords.length - 2] === `check`;
+      if (isCheckInOrCheckOut) {
+        titleWords[titleWords.length - 2] = titleWords[titleWords.length - 2] + `-` + titleWords[titleWords.length - 1];
+        titleWords.pop();
+      }
+      const offerTitle = capitalizeFirstLetter(titleWords.join(` `));
       const clickedOffer = this._availableOfferList.find((offer) => offer.title === offerTitle);
       const coincidence = this._data.offers.find((offer) => offer.title === clickedOffer.title);
       if (coincidence) {
@@ -400,23 +402,16 @@ export default class TripPointEditView extends SmartElement {
     }
   }
 
-  // _formResetClickHandler(evt) {
-  //   alert(evt.target.innerText);
-  //   // Если у нашего элемента (trip-point-edit) уже есть id (уже точка есть на сервере), то отправляем DELETE-запрос на удаление элемента.
-  //   // Если нет id - значит это создание нового элемента и можно просто удалить элемент из DOM-дерева
-  //   // Можно придумать другой способ идентификации кнопки
-  //   // console.log(this._data);
-  //   return;   // Временно, чтобы не удалить точку маршрута
-  //   evt.preventDefault();
-  //   this._callback.resetClick(TripPointEditView.parseDataToPoint(this._data));
-  // }
+  _deleteClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.resetClick(TripPointEditView.parseDataToPoint(this._data));
+  }
 
   setFormResetClickHandler(callback) {
     this._callback.resetClick = callback;
-    // Ищем или кнопку Cancel или кнопку Delete
     this.getElement()
       .querySelector(`.event__reset-btn`)
-      .addEventListener(`click`, this._formResetClickHandler);
+      .addEventListener(`click`, this._deleteClickHandler);
   }
 
   _favoriteClickHandler() {
@@ -427,6 +422,9 @@ export default class TripPointEditView extends SmartElement {
   }
 
   setFavoriteClickHandler(callback) {
+    if (this._isNewPoint) {
+      return;
+    }
     this._callback.favoriteClick = callback;
     this.getElement().querySelector(`.event__favorite-btn`).addEventListener(`click`, this._favoriteClickHandler);
   }
@@ -440,7 +438,6 @@ export default class TripPointEditView extends SmartElement {
   }
 
   _formSubmitHandler(evt) {
-    // console.log(this._data);
     evt.preventDefault();
     this._callback.formSubmit(TripPointEditView.parseDataToPoint(this._data));
   }

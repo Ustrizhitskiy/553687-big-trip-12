@@ -1,4 +1,5 @@
 import AbstractElement from "./abstract";
+import {remove} from "../utils/render";
 
 export default class SmartElement extends AbstractElement {
   constructor() {
@@ -24,6 +25,11 @@ export default class SmartElement extends AbstractElement {
   }
 
   updateData(update, onlyDataUpdating) {
+    if (update.isDeleting) {
+      remove(this);
+      return;
+    }
+
     if (!update) {
       return;
     }
