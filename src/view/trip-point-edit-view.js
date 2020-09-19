@@ -361,6 +361,10 @@ export default class TripPointEditView extends SmartElement {
     this._availableOfferList = newOffer.offers;
   }
 
+  setAvailableOffers(offerList) {
+    this._availableOfferList = offerList;
+  }
+
   _changePointTypeHandler(evt) {
     evt.preventDefault();
     const newOffer = this._allOffersEntity.find((offerItem) => evt.target.dataset.type === offerItem.type);

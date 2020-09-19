@@ -126,7 +126,7 @@ export default class TripPointPresenter {
     if (evt.key === `Escape` || evt.key === `Esc`) {
       evt.preventDefault();
       const offerByCurrentType = this._offerModel.getOfferObjByType(this._tripPoint.type).offers;
-      this._tripPointEditComponent._availableOfferList = offerByCurrentType;
+      this._tripPointEditComponent.setAvailableOffers(offerByCurrentType);
       this._tripPointEditComponent.reset(this._tripPoint);
       this._replaceFormToCard();
     }
