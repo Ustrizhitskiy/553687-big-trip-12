@@ -40,6 +40,7 @@ const handleSiteMenuClick = (menuItem) => {
       boardPresenter.createNewPoint(handleNewFormClose);
       break;
     case MenuItem.TABLE:
+      boardPresenter.destroy();
       boardPresenter.init();
       remove(statisticsComponent);
       break;
