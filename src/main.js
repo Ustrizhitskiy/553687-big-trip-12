@@ -2,12 +2,13 @@ import Api from "./api";
 import TripPointModel from "./model/trip-point-model";
 import FilterModel from "./model/filter-model";
 import SiteMenuView from "./view/site-menu-view";
-import {render, RenderPosition} from "./utils/render";
+import {remove, render, RenderPosition} from "./utils/render";
 import {FilterType, MenuItem, UpdateType} from "./const";
 import FilterPresenter from "./presenter/filter-presenter";
 import BoardPresenter from "./presenter/board-presenter";
 import OfferModel from "./model/offer-model";
 import DestinationModel from "./model/destination-model";
+import StatisticsView from "./view/statistics-view";
 
 const AUTHORIZATION = `Basic kTy9gIdsz2317rD`;
 const END_POINT = `https://12.ecmascript.pages.academy/big-trip`;
@@ -16,7 +17,7 @@ const tripMainHeaderElement = document.querySelector(`.trip-main`);
 const tabsAndFiltersTitles = tripMainHeaderElement.querySelectorAll(`.trip-main__trip-controls h2`);
 const menuTitleElement = tabsAndFiltersTitles[0];
 
-// const siteMainElement = document.querySelector(`.page-body__page-main .trip-events`);
+const siteMainElement = document.querySelector(`.page-body__page-main .trip-events`);
 
 const filterModel = new FilterModel();
 const tripPontModel = new TripPointModel();
@@ -26,25 +27,26 @@ const api = new Api(END_POINT, AUTHORIZATION);
 
 const handleNewFormClose = () => {};
 
-// let statisticComponent = null;
+let statisticsComponent = null;
 
 const handleSiteMenuClick = (menuItem) => {
   siteMenuComponent.setMenuItem(menuItem);
   switch (menuItem) {
     case MenuItem.ADD_NEW_POINT:
-      // remove(statisticsComponent);
+      remove(statisticsComponent);
       boardPresenter.destroy();
       filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
       boardPresenter.init();
       boardPresenter.createNewPoint(handleNewFormClose);
-      // console.log(siteMenuComponent.getElement().querySelector(`[data-name=${MenuItem.TABLE}]`));
-      // siteMenuComponent.getElement().querySelector(`[data-name=${MenuItem.TABLE}]`).disabled = true;
       break;
     case MenuItem.TABLE:
-      // Перейти на страницу со списком точек маршрута, если она не открыта
+      boardPresenter.init();
+      remove(statisticsComponent);
       break;
     case MenuItem.STATISTICS:
-      // Перейти на страницу со статистикой, если она не открыта
+      boardPresenter.destroy();
+      statisticsComponent = new StatisticsView(tripPontModel.getTripPoints());
+      render(siteMainElement, statisticsComponent, RenderPosition.BEFOREEND);
       break;
   }
 };
