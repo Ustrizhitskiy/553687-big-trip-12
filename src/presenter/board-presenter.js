@@ -175,7 +175,8 @@ export default class BoardPresenter {
         this._handleModeChange,
         this._api,
         this._offerModel,
-        point.type
+        point.type,
+        this._currentSortType
     );
     tripPointPresenter.init(point);
     this._tripPointPresenter[point.id] = tripPointPresenter;

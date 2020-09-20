@@ -2,6 +2,7 @@ import AbstractElement from "./abstract";
 import moment from "moment";
 import {getPreposition} from "../utils/point";
 import {capitalizeFirstLetter} from "../utils/render";
+import {SortType} from "../const";
 
 const getTimeFromStartToEnd = (startDate, endDate) => {
   try {
@@ -17,7 +18,7 @@ const getTimeFromStartToEnd = (startDate, endDate) => {
   }
 };
 
-const createTripPointTemplate = (point) => {
+const createTripPointTemplate = (point, currentSortType) => {
   const {type, dateFrom, dateTo, basePrice, destination, offers} = point;
   const visuallyOffers = offers.length <= 3 ? offers : offers.slice(0, 3);
 
@@ -29,18 +30,33 @@ const createTripPointTemplate = (point) => {
     </li>`
   ).join(``);
 
+  const createDayTemplate = (day, month, year) => {
+    if (currentSortType === SortType.EVENT) {
+      return (
+        `<div class="day__info">
+          <span class="day__counter">${day}</span>
+          <time class="day__date" datetime="${year}-${month}-${day}">
+            ${month} ${year}
+          </time>
+        </div>`
+      );
+    } else {
+      return (
+        `<div class="day__info">
+          <time class="day__date">
+          </time>
+        </div>`
+      );
+    }
+  };
+
   const day = moment(dateFrom).date();
   const month = moment(dateFrom).month() + 1;
   const year = moment(dateFrom).year();
 
   return (
     `<li class="trip-days__item  day">
-        <div class="day__info">
-          <span class="day__counter">${day}</span>
-          <time class="day__date" datetime="${year}-${month}-${day}">
-            ${month} ${year}
-          </time>
-        </div>
+        ${createDayTemplate(day, month, year)}
         <ul class="trip-events__list">
           <div class="event">
             <div class="event__type">
@@ -76,15 +92,16 @@ const createTripPointTemplate = (point) => {
 };
 
 export default class TripPointView extends AbstractElement {
-  constructor(point) {
+  constructor(point, currentSortType) {
     super();
     this._point = point;
+    this._currentSortType = currentSortType;
 
     this._editClickHandler = this._editClickHandler.bind(this);
   }
 
   getTemplate() {
-    return createTripPointTemplate(this._point);
+    return createTripPointTemplate(this._point, this._currentSortType);
   }
 
   _editClickHandler(evt) {
