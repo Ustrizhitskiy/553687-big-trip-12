@@ -18,7 +18,7 @@ const getTimeFromStartToEnd = (startDate, endDate) => {
   }
 };
 
-const createTripPointTemplate = (point, currentSortType) => {
+const createTripPointTemplate = (point, currentSortType, isDateAfterPrevious) => {
   const {type, dateFrom, dateTo, basePrice, destination, offers} = point;
   const visuallyOffers = offers.length <= 3 ? offers : offers.slice(0, 3);
 
@@ -31,7 +31,7 @@ const createTripPointTemplate = (point, currentSortType) => {
   ).join(``);
 
   const createDayTemplate = (day, month, year) => {
-    if (currentSortType === SortType.EVENT) {
+    if (currentSortType === SortType.EVENT && isDateAfterPrevious) {
       return (
         `<div class="day__info">
           <span class="day__counter">${day}</span>
@@ -92,16 +92,17 @@ const createTripPointTemplate = (point, currentSortType) => {
 };
 
 export default class TripPointView extends AbstractElement {
-  constructor(point, currentSortType) {
+  constructor(point, currentSortType, isDateSamePrevious) {
     super();
     this._point = point;
     this._currentSortType = currentSortType;
+    this._isDateSamePrevious = isDateSamePrevious;
 
     this._editClickHandler = this._editClickHandler.bind(this);
   }
 
   getTemplate() {
-    return createTripPointTemplate(this._point, this._currentSortType);
+    return createTripPointTemplate(this._point, this._currentSortType, this._isDateSamePrevious);
   }
 
   _editClickHandler(evt) {
