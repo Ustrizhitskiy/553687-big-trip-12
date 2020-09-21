@@ -2,13 +2,15 @@ import SmartElement from "./smart";
 import {getPreposition} from "../utils/point";
 import flatpickr from "flatpickr";
 import {ACTIVITY_EVENTS, TRANSFER_EVENTS} from "../const";
+import moment from "moment";
+import he from "he";
 
 import "../../node_modules/flatpickr/dist/flatpickr.min.css";
 import {capitalizeFirstLetter} from "../utils/render";
 
 const POINT_BLANK = {
   type: `bus`,
-  dateFrom: null,
+  dateFrom: moment.now(),
   dateTo: null,
   basePrice: 0,
   isFavorite: false,
@@ -91,7 +93,8 @@ const createHeader = (data, cityList, isNewPoint) => {
         <label class="event__label  event__type-output" for="event-destination-1">
           ${type ? capitalizeFirstLetter(type) : `Bus`} ${preposition}
         </label>
-        <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${destination ? destination.name : ``}" list="destination-list-1">
+        <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination"
+            value="${destination ? he.encode(`${destination.name}`) : ``}" list="destination-list-1">
         <datalist id="destination-list-1">
           ${destinationNameList}
         </datalist>
@@ -112,7 +115,7 @@ const createHeader = (data, cityList, isNewPoint) => {
           <span class="visually-hidden">Price</span>
           &euro;
         </label>
-        <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${basePrice ? basePrice : ``}">
+        <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${basePrice ? he.encode(`${basePrice}`) : 0}">
       </div>
       <button class="event__save-btn  btn  btn--blue" type="submit" ${isDisabled ? `disabled` : ``}>${isSaving ? `Saving` : `Save`}</button>
       ${isNewPoint ? `<button class="event__reset-btn" type="reset">Cancel</button>` : `<button class="event__reset-btn" type="reset">${isDeleting ? `Deleting` : `Delete`}</button>`}
@@ -216,10 +219,10 @@ const createPointEditTemplate = (data, availableOfferList, destinationNameList, 
 
 export default class TripPointEditView extends SmartElement {
   constructor(isNewPoint = false, tripPoint = POINT_BLANK, availableOffer = [], destinationList = []) {
-    // console.log(tripPoint);
     super();
     this._data = TripPointEditView.parsePointToData(tripPoint);
-    this._datepicker = null;
+    this._startDatepicker = null;
+    this._endtDatepicker = null;
     this._destinationList = destinationList;
     this._allOffersEntity = [];
     this._availableOfferList = availableOffer.offers;
@@ -236,15 +239,21 @@ export default class TripPointEditView extends SmartElement {
     this._chooseOfferClickHandler = this._chooseOfferClickHandler.bind(this);
 
     this._setInnerHandlers();
-    this._setDatepicker();
+    this._setStartDatepicker();
+    this._setEndDatepicker();
   }
 
   removeElement() {
     super.removeElement();
 
-    if (this._datepicker) {
-      this._datepicker.destroy();
-      this._datepicker = null;
+    if (this._startDatepicker) {
+      this._startDatepicker.destroy();
+      this._startDatepicker = null;
+    }
+
+    if (this._endtDatepicker) {
+      this._endtDatepicker.destroy();
+      this._endtDatepicker = null;
     }
   }
 
@@ -255,47 +264,54 @@ export default class TripPointEditView extends SmartElement {
   }
 
   getTemplate() {
+    this._data.isDisabled = this._data.destination.name === `` || !this._data.dateFrom || !this._data.dateTo || this._data.dateTo < this._data.dateFrom;
     const destinationNameList = this._destinationList.map((destination) => destination.name);
     return createPointEditTemplate(this._data, this._availableOfferList, destinationNameList, this._isNewPoint);
   }
 
   restoreHandlers() {
     this._setInnerHandlers();
-    this._setDatepicker();
+    this._setStartDatepicker();
+    this._setEndDatepicker();
     this.setFormSubmitHandler(this._callback.formSubmit);
     this.setFormResetClickHandler(this._callback.resetClick);
     this.setFavoriteClickHandler(this._callback.favoriteClick);
   }
 
-  _setDatepicker() {
-    if (this._datepicker) {
-      this._datepicker.destroy();
-      this._datepicker = null;
+  _setStartDatepicker() {
+    if (this._startDatepicker) {
+      this._startDatepicker.destroy();
+      this._startDatepicker = null;
     }
 
-    const obj = {
-      time24hr: `time_24hr`
-    };
-
-    this._datepicker = flatpickr(
+    this._startDatepicker = flatpickr(
         this.getElement().querySelector(`#event-start-time-1`),
         {
           enableTime: true,
           dateFormat: `d/m/y H:i`,
-          [obj.time24hr]: true,
+          [`time_24hr`]: true,
           defaultDate: this._data.dateFrom,
-          onChange: this._dateFromChangeHandler
+          maxDate: this._data.dateTo,
+          onClose: this._dateFromChangeHandler
         }
     );
+  }
 
-    this._datepicker = flatpickr(
+  _setEndDatepicker() {
+    if (this._endtDatepicker) {
+      this._endtDatepicker.destroy();
+      this._endtDatepicker = null;
+    }
+
+    this._endtDatepicker = flatpickr(
         this.getElement().querySelector(`#event-end-time-1`),
         {
           enableTime: true,
           dateFormat: `d/m/y H:i`,
-          [obj.time24hr]: true,
+          [`time_24hr`]: true,
           defaultDate: this._data.dateTo,
-          onChange: this._dateToChangeHandler
+          minDate: this._data.dateFrom,
+          onClose: this._dateToChangeHandler
         }
     );
   }
@@ -309,12 +325,6 @@ export default class TripPointEditView extends SmartElement {
     this.getElement()
       .querySelector(`.event__input--destination`)
       .addEventListener(`change`, this._changeCityHandler);
-    this.getElement()
-      .querySelector(`#event-start-time-1`)
-      .addEventListener(`change`, this._dateFromChangeHandler);
-    this.getElement()
-      .querySelector(`#event-end-time-1`)
-      .addEventListener(`change`, this._dateToChangeHandler);
     this.getElement()
       .querySelector(`.event__input--price`)
       .addEventListener(`change`, this._changePriceHandler);
@@ -397,12 +407,18 @@ export default class TripPointEditView extends SmartElement {
   _dateFromChangeHandler(dateListPicker) {
     if (!dateListPicker.target) {
       this._data.dateFrom = dateListPicker[0];
+      this.updateData({
+        dateFrom: dateListPicker[0]
+      });
     }
   }
 
   _dateToChangeHandler(dateListPicker) {
     if (!dateListPicker.target) {
       this._data.dateTo = dateListPicker[0];
+      this.updateData({
+        dateTo: dateListPicker[0]
+      });
     }
   }
 
