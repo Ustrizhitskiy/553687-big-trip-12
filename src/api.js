@@ -89,7 +89,7 @@ export default class Api {
   }
 
   static checkStatus(response) {
-    const isWrongStatus = response.status < SuccessHTTPStatusRange.MIN && response.status > SuccessHTTPStatusRange.MAX;
+    const isWrongStatus = response.status < SuccessHTTPStatusRange.MIN || response.status > SuccessHTTPStatusRange.MAX;
     if (isWrongStatus) {
       throw new Error(`${response.status}: ${response.statusText}`);
     }
