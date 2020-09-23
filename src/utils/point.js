@@ -6,7 +6,7 @@ export const isPointAfterNow = (date) => {
     return false;
   }
 
-  return moment(new Date()).isAfter(date, `day`);
+  return moment(new Date()).isAfter(date);
 };
 
 export const isPointBeforeNow = (date) => {
@@ -14,7 +14,7 @@ export const isPointBeforeNow = (date) => {
     return false;
   }
 
-  return moment(new Date()).isBefore(date, `day`);
+  return moment(new Date()).isBefore(date);
 };
 
 export const isDatesEqual = (date1, date2) => {

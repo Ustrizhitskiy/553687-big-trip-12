@@ -33,6 +33,7 @@ export default class Api {
       body: JSON.stringify(TripPointModel.adaptToServer(point)),
       headers: new Headers({"Content-Type": `application/json`})
     })
+      .then(Api.toJSON)
       .then(TripPointModel.adaptToClient);
   }
 
@@ -88,7 +89,7 @@ export default class Api {
   }
 
   static checkStatus(response) {
-    const isWrongStatus = response.status < SuccessHTTPStatusRange.MIN && response.status > SuccessHTTPStatusRange.MAX;
+    const isWrongStatus = response.status < SuccessHTTPStatusRange.MIN || response.status > SuccessHTTPStatusRange.MAX;
     if (isWrongStatus) {
       throw new Error(`${response.status}: ${response.statusText}`);
     }

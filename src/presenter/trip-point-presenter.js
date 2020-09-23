@@ -16,13 +16,15 @@ export const State = {
 };
 
 export default class TripPointPresenter {
-  constructor(pointListContainer, changeData, changeMode, api, offerModel, pointType) {
+  constructor(pointListContainer, changeData, changeMode, api, offerModel, pointType, currentSortType, isDateAfterPrevious) {
     this._pointListContainer = pointListContainer;
     this._changeData = changeData;
     this._changeMode = changeMode;
     this._api = api;
     this._offerModel = offerModel;
     this._availableOfferByCurrentType = offerModel.getOfferObjByType(pointType);
+    this._currentSortType = currentSortType;
+    this._isDateAfterPrevious = isDateAfterPrevious;
 
     this._tripPointComponent = null;
     this._tripPointEditComponent = null;
@@ -43,7 +45,7 @@ export default class TripPointPresenter {
     const prevTripPointComponent = this._tripPointComponent;
     const prevTripPointEditComponent = this._tripPointEditComponent;
 
-    this._tripPointComponent = new TripPointView(tripPoint);
+    this._tripPointComponent = new TripPointView(tripPoint, this._currentSortType, this._isDateAfterPrevious);
     this._tripPointEditComponent = new TripPointEditView(this._isNewPoint, tripPoint, this._availableOfferByCurrentType);
 
     this._tripPointComponent.setEditClickHandler(this._handleEditClick);
@@ -126,7 +128,7 @@ export default class TripPointPresenter {
     if (evt.key === `Escape` || evt.key === `Esc`) {
       evt.preventDefault();
       const offerByCurrentType = this._offerModel.getOfferObjByType(this._tripPoint.type).offers;
-      this._tripPointEditComponent._availableOfferList = offerByCurrentType;
+      this._tripPointEditComponent.setAvailableOffers(offerByCurrentType);
       this._tripPointEditComponent.reset(this._tripPoint);
       this._replaceFormToCard();
     }

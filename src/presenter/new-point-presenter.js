@@ -3,7 +3,10 @@ import {UpdateType, UserAction} from "../const";
 import TripPointEditView from "../view/trip-point-edit-view";
 
 export default class NewPointPresenter {
-  constructor(pointListContainer, changeData) {
+  constructor(pointListContainer, changeData, offerModel, destinationModel) {
+    this._defaultOffers = [];
+    this._offerModel = offerModel;
+    this._destinationModel = destinationModel;
     this._pointListContainer = pointListContainer;
     this._changeData = changeData;
     this._isNewPoint = true;
@@ -23,11 +26,16 @@ export default class NewPointPresenter {
       return;
     }
 
-    this._pointEditComponent = new TripPointEditView(this._isNewPoint);
+    this._defaultOffers = this._offerModel.getOfferObjByType(`bus`);
+
+    const destinationList = this._destinationModel.getDestinations();
+
+    this._pointEditComponent = new TripPointEditView(this._isNewPoint, undefined, this._defaultOffers, destinationList);
     this._pointEditComponent.setFormSubmitHandler(this._handleFormSubmit);
     this._pointEditComponent.setFormResetClickHandler(this._handleCancelClick);
-    // this._pointEditComponent.setCancelClickHandler(this._handleCancelClick);
-    // this._pointEditComponent.setDeleteClickHandler(this._handleDeleteClick);
+
+    const allOffers = this._offerModel.getOffers();
+    this._pointEditComponent.setAllOffers(allOffers);
 
     render(this._pointListContainer, this._pointEditComponent, RenderPosition.AFTERBEGIN);
 
@@ -71,7 +79,7 @@ export default class NewPointPresenter {
   _handleFormSubmit(tripPoint) {
     this._changeData(
         UserAction.ADD_TRIP_POINT,
-        UpdateType.MINOR,
+        UpdateType.MAJOR,
         tripPoint
     );
   }
@@ -79,10 +87,6 @@ export default class NewPointPresenter {
   _handleCancelClick() {
     this.destroy();
   }
-
-  // _handleDeleteClick() {
-  //   this.destroy();
-  // }
 
   _escKeyDownHandler(evt) {
     if (evt.key === `Escape` || evt.key === `Esc`) {
