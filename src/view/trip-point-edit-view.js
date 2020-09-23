@@ -2,7 +2,6 @@ import SmartElement from "./smart";
 import {getPreposition} from "../utils/point";
 import flatpickr from "flatpickr";
 import {ACTIVITY_EVENTS, TRANSFER_EVENTS} from "../const";
-import moment from "moment";
 import he from "he";
 
 import "../../node_modules/flatpickr/dist/flatpickr.min.css";
@@ -10,7 +9,7 @@ import {capitalizeFirstLetter} from "../utils/render";
 
 const POINT_BLANK = {
   type: `bus`,
-  dateFrom: moment.now(),
+  dateFrom: null,
   dateTo: null,
   basePrice: 0,
   isFavorite: false,
@@ -75,7 +74,6 @@ const createHeader = (data, cityList, isNewPoint) => {
   const eventTypeList = createTypeListTemplate();
   const preposition = getPreposition(type);
   const destinationNameList = createDestinationListTemplate(cityList);
-  // console.log(destinationNameList);
 
   return (
     `<header class="event__header">
@@ -240,7 +238,7 @@ export default class TripPointEditView extends SmartElement {
 
     this._setInnerHandlers();
     this._setStartDatepicker();
-    this._setEndDatepicker();
+    this._setAvailableEndDatepicker();
   }
 
   removeElement() {
@@ -272,7 +270,7 @@ export default class TripPointEditView extends SmartElement {
   restoreHandlers() {
     this._setInnerHandlers();
     this._setStartDatepicker();
-    this._setEndDatepicker();
+    this._setAvailableEndDatepicker();
     this.setFormSubmitHandler(this._callback.formSubmit);
     this.setFormResetClickHandler(this._callback.resetClick);
     this.setFavoriteClickHandler(this._callback.favoriteClick);
@@ -295,6 +293,15 @@ export default class TripPointEditView extends SmartElement {
           onClose: this._dateFromChangeHandler
         }
     );
+  }
+
+  _setAvailableEndDatepicker() {
+    if (this._data.dateTo) {
+      this._setEndDatepicker();
+    }
+    if (!this._data.dateFrom) {
+      this.getElement().querySelector(`#event-end-time-1`).disabled = true;
+    }
   }
 
   _setEndDatepicker() {
@@ -410,11 +417,17 @@ export default class TripPointEditView extends SmartElement {
       this.updateData({
         dateFrom: dateListPicker[0]
       });
+      if (this._data.dateFrom) {
+        this._setEndDatepicker();
+      }
     }
   }
 
   _dateToChangeHandler(dateListPicker) {
     if (!dateListPicker.target) {
+      if (dateListPicker.length === 0) {
+        return;
+      }
       this._data.dateTo = dateListPicker[0];
       this.updateData({
         dateTo: dateListPicker[0]

@@ -42,7 +42,7 @@ const renderMoneyChart = (moneyCtx, points) => {
     plugins: [ChartDataLabels],
     type: `horizontalBar`,
     data: {
-      labels: [`???? TAXI`, `???? BUS`, `???? TRAIN`, `???? SHIP`, `????TRANSPORT`, `???? DRIVE`, `✈️ FLIGHT`, `???? CHECK_IN`, `???? SIGHTSEEING`, `????️ RESTAURANT`],
+      labels: [`TAXI`, `BUS`, `TRAIN`, `SHIP`, `TRANSPORT`, `DRIVE`, `FLIGHT`, `CHECK_IN`, `SIGHTSEEING`, `RESTAURANT`],
       datasets: [{
         data: [billsByType[`taxi`], billsByType[`bus`], billsByType[`train`], billsByType[`ship`],
           billsByType[`transport`], billsByType[`drive`], billsByType[`flight`], billsByType[`check-in`],
@@ -119,7 +119,7 @@ const renderTransportChart = (transportCtx, points) => {
     plugins: [ChartDataLabels],
     type: `horizontalBar`,
     data: {
-      labels: [`???? TAXI`, `???? BUS`, `???? TRAIN`, `???? SHIP`, `????TRANSPORT`, `???? DRIVE`, `✈️ FLIGHT`, `???? CHECK_IN`, `???? SIGHTSEEING`, `????️ RESTAURANT`],
+      labels: [`TAXI`, `BUS`, `TRAIN`, `SHIP`, `TRANSPORT`, `DRIVE`, `FLIGHT`, `CHECK_IN`, `SIGHTSEEING`, `RESTAURANT`],
       datasets: [{
         data: [timesCountByType[`taxi`], timesCountByType[`bus`], timesCountByType[`train`], timesCountByType[`ship`],
           timesCountByType[`transport`], timesCountByType[`drive`], timesCountByType[`flight`], timesCountByType[`check-in`],
@@ -196,7 +196,7 @@ const renderTimeSpendChart = (timeSpendCtx, points) => {
     plugins: [ChartDataLabels],
     type: `horizontalBar`,
     data: {
-      labels: [`???? TAXI`, `???? BUS`, `???? TRAIN`, `???? SHIP`, `????TRANSPORT`, `???? DRIVE`, `✈️ FLIGHT`, `???? CHECK_IN`, `???? SIGHTSEEING`, `????️ RESTAURANT`],
+      labels: [`TAXI`, `BUS`, `TRAIN`, `SHIP`, `TRANSPORT`, `DRIVE`, `FLIGHT`, `CHECK_IN`, `SIGHTSEEING`, `RESTAURANT`],
       datasets: [{
         data: [timesSpendByType[`taxi`], timesSpendByType[`bus`], timesSpendByType[`train`], timesSpendByType[`ship`],
           timesSpendByType[`transport`], timesSpendByType[`drive`], timesSpendByType[`flight`], timesSpendByType[`check-in`],
@@ -263,7 +263,7 @@ const renderTimeSpendChart = (timeSpendCtx, points) => {
 const createStatisticsTemplate = () => {
   return (
     `<div class="page-body__container">
-      <section class="statistics">
+      <section class="statistics" style="margin-left: 100px">
         <h2>Trip statistics</h2>
 
         <div class="statistics__item statistics__item--money">

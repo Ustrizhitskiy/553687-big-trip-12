@@ -137,7 +137,6 @@ export default class TripPointPresenter {
   async _getDestinations() {
     await this._api.getDestinations()
       .then((cities) => {
-        // console.log(`asdsd`);
         this._tripPointEditComponent.setCityChange(cities);
       })
       .catch(() => {
@@ -170,7 +169,6 @@ export default class TripPointPresenter {
   }
 
   _handleFormSubmit(update) {
-    // Если изменились даты, то надо полностью перерисовать список, если нет, просто обновить уже существующий компонент, оставив на своем месте
     const isMinorUpdate =
       isDatesEqual(this._tripPoint.dateTo, update.dateTo) &&
       isDatesEqual(this._tripPoint.dateFrom, update.dateFrom);
