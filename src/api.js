@@ -71,12 +71,6 @@ export default class Api {
       });
   }
 
-  // Для доп задания (жизнь без инета)
-  syncWithServer() {
-    return this._load({url: `points/sync`})
-      .then(Api.toJSON);
-  }
-
   _load({url, method = Method.GET, body = null, headers = new Headers()}) {
     headers.append(`Authorization`, this._authorization);
 

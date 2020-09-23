@@ -89,9 +89,6 @@ export default class BoardPresenter {
   }
 
   _handleViewAction(actionType, updateType, update) {
-    // alert(actionType);
-    // console.log(updateType);
-    // console.log(update);
     switch (actionType) {
       case UserAction.ADD_TRIP_POINT:
         this._newPointPresenter.setSaving();
@@ -130,8 +127,6 @@ export default class BoardPresenter {
   }
 
   _handleModelEvent(updateType, data) {
-    // console.log(updateType);
-    // console.log(data);
     switch (updateType) {
       case UpdateType.MINOR:
         this._tripPointPresenter[data.id].init(data);
