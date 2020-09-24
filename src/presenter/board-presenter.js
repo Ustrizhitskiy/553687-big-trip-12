@@ -164,7 +164,7 @@ export default class BoardPresenter {
     render(this._boardComponent, this._sortComponent, RenderPosition.AFTERBEGIN);
   }
 
-  _renderTripPoint(point, isDateAfterPrevious) {
+  _renderTripPoint(point, isDateAfterPrevious, dayNumber) {
     const tripPointPresenter = new TripPointPresenter(
         this._tripPointListComponent,
         this._handleViewAction,
@@ -173,7 +173,8 @@ export default class BoardPresenter {
         this._offerModel,
         point.type,
         this._currentSortType,
-        isDateAfterPrevious
+        isDateAfterPrevious,
+        dayNumber
     );
     tripPointPresenter.init(point);
     this._tripPointPresenter[point.id] = tripPointPresenter;
@@ -182,10 +183,14 @@ export default class BoardPresenter {
   _renderPoints(points) {
     if (points.length > 0) {
       const isFirstDayDisplay = true;
-      this._renderTripPoint(points[0], isFirstDayDisplay);
+      let count = 1;
+      this._renderTripPoint(points[0], isFirstDayDisplay, count);
       for (let i = 1; i < points.length; i++) {
         const isDateAfterPrevious = moment(points[i].dateFrom).isAfter(moment(points[i - 1].dateFrom), `days`);
-        this._renderTripPoint(points[i], isDateAfterPrevious);
+        if (isDateAfterPrevious) {
+          count++;
+        }
+        this._renderTripPoint(points[i], isDateAfterPrevious, count);
       }
     }
   }

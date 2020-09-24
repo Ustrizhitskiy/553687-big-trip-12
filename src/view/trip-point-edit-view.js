@@ -470,9 +470,10 @@ export default class TripPointEditView extends SmartElement {
 
   setCloseClickHandler(callback) {
     this._callback.closeClick = callback;
-    this.getElement()
-      .querySelector(`.event__rollup-btn`)
-      .addEventListener(`click`, this._handleCloseClick);
+    const openPointCardElement = this.getElement().querySelector(`.event__rollup-btn`);
+    if (openPointCardElement) {
+      openPointCardElement.addEventListener(`click`, this._handleCloseClick);
+    }
   }
 
   _changePriceHandler(evt) {

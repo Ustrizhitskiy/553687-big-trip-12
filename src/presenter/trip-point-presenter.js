@@ -16,7 +16,7 @@ export const State = {
 };
 
 export default class TripPointPresenter {
-  constructor(pointListContainer, changeData, changeMode, api, offerModel, pointType, currentSortType, isDateAfterPrevious) {
+  constructor(pointListContainer, changeData, changeMode, api, offerModel, pointType, currentSortType, isDateAfterPrevious, dayNumber) {
     this._pointListContainer = pointListContainer;
     this._changeData = changeData;
     this._changeMode = changeMode;
@@ -25,6 +25,7 @@ export default class TripPointPresenter {
     this._availableOfferByCurrentType = offerModel.getOfferObjByType(pointType);
     this._currentSortType = currentSortType;
     this._isDateAfterPrevious = isDateAfterPrevious;
+    this._dayNumber = dayNumber;
 
     this._tripPointComponent = null;
     this._tripPointEditComponent = null;
@@ -45,7 +46,7 @@ export default class TripPointPresenter {
     const prevTripPointComponent = this._tripPointComponent;
     const prevTripPointEditComponent = this._tripPointEditComponent;
 
-    this._tripPointComponent = new TripPointView(tripPoint, this._currentSortType, this._isDateAfterPrevious);
+    this._tripPointComponent = new TripPointView(tripPoint, this._currentSortType, this._isDateAfterPrevious, this._dayNumber);
     this._tripPointEditComponent = new TripPointEditView(this._isNewPoint, tripPoint, this._availableOfferByCurrentType);
 
     this._tripPointComponent.setEditClickHandler(this._handleEditClick);
@@ -184,7 +185,7 @@ export default class TripPointPresenter {
   _handleDeleteClick(tripPoint) {
     this._changeData(
         UserAction.DELETE_TRIP_POINT,
-        UpdateType.MINOR,
+        UpdateType.MAJOR,
         tripPoint
     );
   }
