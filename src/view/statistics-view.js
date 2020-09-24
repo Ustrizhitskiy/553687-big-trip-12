@@ -34,7 +34,7 @@ const renderMoneyChart = (moneyCtx, points) => {
 
   const allEvenType = [...TRANSFER_EVENTS, ...ACTIVITY_EVENTS];
   const billsByType = new Map();
-  for (let type of allEvenType) {
+  for (const type of allEvenType) {
     billsByType[type] = getOverallBillByType(points, type);
   }
 
@@ -111,7 +111,7 @@ const renderTransportChart = (transportCtx, points) => {
 
   const allEvenType = [...TRANSFER_EVENTS, ...ACTIVITY_EVENTS];
   const timesCountByType = new Map();
-  for (let type of allEvenType) {
+  for (const type of allEvenType) {
     timesCountByType[type] = getTimesCountByType(points, type);
   }
 
@@ -188,7 +188,7 @@ const renderTimeSpendChart = (timeSpendCtx, points) => {
 
   const allEvenType = [...TRANSFER_EVENTS, ...ACTIVITY_EVENTS];
   const timesSpendByType = new Map();
-  for (let type of allEvenType) {
+  for (const type of allEvenType) {
     timesSpendByType[type] = getDurationInHours(getDurationByType(points, type));
   }
 
