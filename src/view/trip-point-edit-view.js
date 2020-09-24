@@ -21,7 +21,7 @@ const POINT_BLANK = {
   }
 };
 
-const createPointTypeTemplate = (typeList) => {
+const createPointTypeTemplate = (typeList, currentType) => {
   return typeList
     .map((type) => {
       return (
@@ -33,7 +33,7 @@ const createPointTypeTemplate = (typeList) => {
             name="event-type"
             value="${type}">
           <label
-            class="event__type-label  event__type-label--${type}"
+            class="event__type-label  event__type-label--${type} ${currentType === type ? `event__type-label--active` : ``}"
             data-type="${type}"
             for="event-type-${type}-1">
             ${capitalizeFirstLetter(type)}
@@ -44,9 +44,9 @@ const createPointTypeTemplate = (typeList) => {
     .join(``);
 };
 
-const createTypeListTemplate = () => {
-  const transferTypes = createPointTypeTemplate(TRANSFER_EVENTS);
-  const activityTypes = createPointTypeTemplate(ACTIVITY_EVENTS);
+const createTypeListTemplate = (type) => {
+  const transferTypes = createPointTypeTemplate(TRANSFER_EVENTS, type);
+  const activityTypes = createPointTypeTemplate(ACTIVITY_EVENTS, type);
 
   return (
     `<fieldset class="event__type-group">
@@ -71,7 +71,7 @@ const createDestinationListTemplate = (destinationNameList) => {
 const createHeader = (data, cityList, isNewPoint) => {
   const {type, destination, basePrice, isFavorite, dateFrom, dateTo, isSaving, isDeleting, isDisabled} = data;
 
-  const eventTypeList = createTypeListTemplate();
+  const eventTypeList = createTypeListTemplate(type);
   const preposition = getPreposition(type);
   const destinationNameList = createDestinationListTemplate(cityList);
 
@@ -124,7 +124,7 @@ const createHeader = (data, cityList, isNewPoint) => {
           <path d="M14 21l-8.22899 4.3262 1.57159-9.1631L.685209 9.67376 9.8855 8.33688 14 0l4.1145 8.33688 9.2003 1.33688-6.6574 6.48934 1.5716 9.1631L14 21z"/>
         </svg>
       </label>` : ``}
-      <button class="event__rollup-btn" type="button">
+      ${!isNewPoint ? `<button class="event__rollup-btn" type="button">` : ``}
         <span class="visually-hidden">Open event</span>
       </button>
     </header>`
@@ -235,6 +235,7 @@ export default class TripPointEditView extends SmartElement {
     this._favoriteClickHandler = this._favoriteClickHandler.bind(this);
     this._changePriceHandler = this._changePriceHandler.bind(this);
     this._chooseOfferClickHandler = this._chooseOfferClickHandler.bind(this);
+    this._handleCloseClick = this._handleCloseClick.bind(this);
 
     this._setInnerHandlers();
     this._setStartDatepicker();
@@ -274,6 +275,7 @@ export default class TripPointEditView extends SmartElement {
     this.setFormSubmitHandler(this._callback.formSubmit);
     this.setFormResetClickHandler(this._callback.resetClick);
     this.setFavoriteClickHandler(this._callback.favoriteClick);
+    this.setCloseClickHandler(this._callback.closeClick);
   }
 
   _setStartDatepicker() {
@@ -460,6 +462,17 @@ export default class TripPointEditView extends SmartElement {
     }
     this._callback.favoriteClick = callback;
     this.getElement().querySelector(`.event__favorite-btn`).addEventListener(`click`, this._favoriteClickHandler);
+  }
+
+  _handleCloseClick() {
+    this._callback.closeClick();
+  }
+
+  setCloseClickHandler(callback) {
+    this._callback.closeClick = callback;
+    this.getElement()
+      .querySelector(`.event__rollup-btn`)
+      .addEventListener(`click`, this._handleCloseClick);
   }
 
   _changePriceHandler(evt) {

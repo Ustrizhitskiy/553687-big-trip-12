@@ -51,8 +51,8 @@ const createTripPointTemplate = (point, currentSortType, isDateAfterPrevious) =>
   };
 
   const day = moment(dateFrom).date();
-  const month = moment(dateFrom).month() + 1;
-  const year = moment(dateFrom).year();
+  const month = moment(dateFrom).format(`MMM`).toString();
+  const year = moment(dateFrom).format(`YY`);
 
   return (
     `<li class="trip-days__item  day">

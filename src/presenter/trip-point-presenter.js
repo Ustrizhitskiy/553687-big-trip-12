@@ -31,7 +31,7 @@ export default class TripPointPresenter {
     this._mode = Mode.DEFAULT;
 
     this._handleFormSubmit = this._handleFormSubmit.bind(this);
-    this._handleCancelClick = this._handleCancelClick.bind(this);
+    this._handleCloseClick = this._handleCloseClick.bind(this);
     this._handleDeleteClick = this._handleDeleteClick.bind(this);
     this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
     this._handleEditClick = this._handleEditClick.bind(this);
@@ -52,6 +52,7 @@ export default class TripPointPresenter {
     this._tripPointEditComponent.setFavoriteClickHandler(this._handleFavoriteClick);
     this._tripPointEditComponent.setFormSubmitHandler(this._handleFormSubmit);
     this._tripPointEditComponent.setFormResetClickHandler(this._handleDeleteClick);
+    this._tripPointEditComponent.setCloseClickHandler(this._handleCloseClick);
 
     if (prevTripPointComponent === null || prevTripPointEditComponent === null) {
       render(this._pointListContainer, this._tripPointComponent, RenderPosition.BEFOREEND);
@@ -188,7 +189,10 @@ export default class TripPointPresenter {
     );
   }
 
-  _handleCancelClick() {
-    remove(this._tripPointEditComponent);
+  _handleCloseClick() {
+    const offerByCurrentType = this._offerModel.getOfferObjByType(this._tripPoint.type).offers;
+    this._tripPointEditComponent.setAvailableOffers(offerByCurrentType);
+    this._tripPointEditComponent.reset(this._tripPoint);
+    this._replaceFormToCard();
   }
 }

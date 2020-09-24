@@ -644,6 +644,9 @@ main {
     background-image: url("../img/icons/restaurant.png"); }
   .event__type-label:hover {
     color: #ffd054; }
+  .event__type-label--active {
+    background-color: #f2f2f2;
+  }
 
 .event__type-input:checked + .event__type-label {
   color: #000000;
