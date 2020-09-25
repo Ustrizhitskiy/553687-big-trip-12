@@ -9,6 +9,7 @@ import BoardPresenter from "./presenter/board-presenter";
 import OfferModel from "./model/offer-model";
 import DestinationModel from "./model/destination-model";
 import StatisticsView from "./view/statistics-view";
+import RoutePresenter from "./presenter/route-presenter";
 
 const AUTHORIZATION = `Basic kTy9gIdsz2317rD`;
 const END_POINT = `https://12.ecmascript.pages.academy/big-trip`;
@@ -100,6 +101,10 @@ const getDestinationsFromServer = () => {
   return api.getDestinations();
 };
 
-getInitDataFromServer(getOffersFromServer, getPointsFromServer, getDestinationsFromServer).then(() => {});
+getInitDataFromServer(getOffersFromServer, getPointsFromServer, getDestinationsFromServer)
+  .then(() => {
+    const routePresenter = new RoutePresenter(tripMainHeaderElement, tripPontModel);
+    routePresenter.init();
+  });
 
 boardPresenter.init();
